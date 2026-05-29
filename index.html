@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div id="menu">
     <h1>Vocabulary tester!</h1>
     <h2>Welcome! Choose an option!</h2>
 
-    <button>Start Vocabulary Check!</button>
-    <button>My Lists</button>
-    <button>Create List</button>
+    <button onclick="window.open('sub-html/VocabularyCheck.html', '_self')">Start Vocabulary Check!</button>
+    <button onclick="window.open('sub-html/MyLists.html', '_self')">My Lists</button>
+    <button onclick="window.open('sub-html/CreateList.html', '_self')">Create List</button>
 
     <p>Today's word of the day is... <span id="wordOfTheDay">!</span></p>
+</div>
 
     <script src="script.js"></script>
 </body>
