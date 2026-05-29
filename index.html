@@ -1,21 +1,27 @@
+<!-- The code base -->
 <!DOCTYPE html>
+<!-- Website language -->
 <html lang="en">
 <head>
+    <!-- All invisible website metadata -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vocabulary tester</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<!-- Menu class -->
 <div id="menu">
     <h1>Vocabulary tester!</h1>
     <h2>Welcome! Choose an option!</h2>
 
-    <button onclick="window.open('sub-html/VocabularyCheck.html', '_self')">Start Vocabulary Check!</button>
-    <button onclick="window.open('sub-html/MyLists.html', '_self')">My Lists</button>
-    <button onclick="window.open('sub-html/CreateList.html', '_self')">Create List</button>
-
-    <p>Today's word of the day is... <span id="wordOfTheDay">!</span></p>
+    <!-- sends user to different pages -->
+    <button onclick="location.href='sub-html/VocabularyCheck.html'">Start Vocabulary Check</button>
+    <button onclick="location.href='sub-html/MyLists.html'">My Lists</button>
+    <button onclick="location.href='sub-html/CreateList.html'">Create List</button>
+    
+    <!-- sets the word of the day -->
+    <p>Today's word of the day is... <span id="wordOfTheDay"></span>!</p>
 </div>
 
     <script src="script.js"></script>
