@@ -13,39 +13,68 @@
 
         <h1>Create a new List!</h1>
         <h3>Create your own list in just a few clicks!</h3>
+
         <button id="CreateListStartButton">Start</button>
         <button onclick="window.open('/index.html', '_self')">Cancel</button>
 
     </div>
 
+    <!-- Shows the first step page -->
     <div id="Create-List-Step1" class="hidden">
 
         <h1>Step 1: Name your list!</h1>
         <h3>Give your list a name to get started!</h3>
+
         <input type="text" id="listName" name="listName" placeholder="List Name">
+
         <button id="Return1">Return</button>
         <button id="Next1Button">Next</button>
 
     </div>
 
+    <!-- Shows the second step page -->
     <div id="Create-List-Step2" class="hidden">
 
         <h1>Step 2: Select your list languages!</h1>
         <h3>Choose your list languages to begin!</h3>
+
         <select id="language1"></select>
         <select id="language2"></select>
+
         <button id="Return2">Return</button>
         <button id="Next2Button">Next</button>
 
     </div>
 
+    <!-- Shows the third step page -->
     <div id="Create-List-Step3" class="hidden">
 
         <h1>Step 3: Enter your words!</h1>
         <h3>Enter your words for both languages so you can practice!</h3>
 
-        <input type="text" id="word1" name="word1" placeholder="Word in ">
+        <input type="text" id="word1" name="word1" placeholder="">
+        <input type="text" id="word2" name="word2" placeholder="">
+
+        <button id="AddWord">Add Word to list</button>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th id="language1Header"></th>
+                    <th id="language2Header"></th>
+                </tr>
+            </thead>
+
+            <tbody id="wordTable">
+
+            </tbody>
+        </table>
+
+        <button id="Return3">Return</button>
+        <button id="Next3Button">Next</button>
+
     </div>
+
     <script src="/script.js"></script>
 
 </body>

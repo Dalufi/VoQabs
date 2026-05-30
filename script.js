@@ -130,6 +130,26 @@ Return2.addEventListener("click", function() {
 let currentLanguage1 = "";
 let currentLanguage2 = "";
 
+function setupStep3() {
+
+    const input1 = document.getElementById("word1");
+    const input2 = document.getElementById("word2");
+    const tableheader1 = document.getElementById("language1Header");
+    const tableheader2 = document.getElementById("language2Header");
+
+    const select1 = document.getElementById("language1");
+    const select2 = document.getElementById("language2");
+
+    const longName1 = select1.options[select1.selectedIndex].text;
+    const longName2 = select2.options[select2.selectedIndex].text;
+
+    input1.placeholder = "Word in " + longName1;
+    input2.placeholder = "Word in " + longName2;
+    tableheader1.textContent = longName1;
+    tableheader2.textContent = longName2;
+
+}
+
 //moves to Step 3 when the next button is clicked
 Next2Button.addEventListener("click", function() {
     currentLanguage1 = document.getElementById("language1").value;
@@ -150,10 +170,6 @@ Next2Button.addEventListener("click", function() {
     //moves to Step 3
     CreateListStep2.classList.add('hidden');
     CreateListStep3.classList.remove('hidden');
+    setupStep3();
 });
 
-function setupStep3() {
-
-    
-
-}
