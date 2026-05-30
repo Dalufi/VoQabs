@@ -152,3 +152,8 @@ Next2Button.addEventListener("click", function() {
     CreateListStep3.classList.remove('hidden');
 });
 
+function setupStep3() {
+
+    
+
+}
