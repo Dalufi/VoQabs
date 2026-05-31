@@ -34,11 +34,20 @@ const CreateListMenu = document.getElementById('Create-List-Menu');
 const CreateListStep1 = document.getElementById('Create-List-Step1');
 const CreateListStep2 = document.getElementById('Create-List-Step2');
 const CreateListStep3 = document.getElementById('Create-List-Step3');
+const EditMenu = document.getElementById('EditWord');
+const Confirmation = document.getElementById('Create-List-Confirmation');
+const FinishMenu = document.getElementById('FinishMenu');
+
 const startButton = document.getElementById('StartButton');
 const next1Button = document.getElementById('Next1Button');
 const Return1 = document.getElementById('Return1');
 const Return2 = document.getElementById('Return2');
 const Next2Button = document.getElementById('Next2Button');
+const Return3 = document.getElementById('Return3');
+const AddWordButton = document.getElementById('AddWord');
+const Next3Button = document.getElementById('Next3Button');
+const Return4 = document.getElementById('Return4');
+const Finish = document.getElementById('FinishButton');
 
 //event for Start Button
 document.getElementById('CreateListStartButton').addEventListener("click", function() {
@@ -51,6 +60,10 @@ let currentListName = "";
 
 //Event for the first return button
 Return1.addEventListener("click", function() {
+
+    currentListName = "";
+    document.getElementById("listName").value = "";
+
     CreateListMenu.classList.remove('hidden');
     CreateListStep1.classList.add('hidden');
 });
@@ -134,8 +147,14 @@ function setupStep3() {
 
     const input1 = document.getElementById("word1");
     const input2 = document.getElementById("word2");
+
     const tableheader1 = document.getElementById("language1Header");
     const tableheader2 = document.getElementById("language2Header");
+    const Finishtableheader1 = document.getElementById("language1HeaderFinish");
+    const Finishtableheader2 = document.getElementById("language2HeaderFinish");
+
+    const editWord1 = document.getElementById("editWord1");
+    const editWord2 = document.getElementById("editWord2");
 
     const select1 = document.getElementById("language1");
     const select2 = document.getElementById("language2");
@@ -147,6 +166,10 @@ function setupStep3() {
     input2.placeholder = "Word in " + longName2;
     tableheader1.textContent = longName1;
     tableheader2.textContent = longName2;
+    editWord1.placeholder = "Edit word in " + longName1;
+    editWord2.placeholder = "Edit word in " + longName2;
+    Finishtableheader1.textContent = longName1;
+    Finishtableheader2.textContent = longName2;
 
 }
 
@@ -173,3 +196,229 @@ Next2Button.addEventListener("click", function() {
     setupStep3();
 });
 
+const word1Input = document.getElementById("word1");
+const word2Input = document.getElementById("word2");
+const wordTableBody = document.getElementById("wordTable");
+const vocabularyList = [];
+
+//event for the third return button
+Return3.addEventListener("click", function() {
+
+    const answer = confirm("Are you sure you want to go back? All unsaved progress will be lost.");
+
+    if (!answer) {
+        return;
+    }
+
+    currentLanguage1 = "";
+    currentLanguage2 = "";
+
+    document.getElementById("language1").value = "";
+    document.getElementById("language2").value = "";
+
+    CreateListStep2.classList.remove('hidden');
+    CreateListStep3.classList.add('hidden');
+
+    //clears the table when going back to step 2
+    wordTableBody.innerHTML = "";
+    vocabularyList.length = 0;
+
+});
+
+//event for the add word button
+AddWordButton.addEventListener("click", function() {
+
+    const word1 = word1Input.value;
+    const word2 = word2Input.value;
+    const buttonCell = document.createElement("td");
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+
+    //prevents the user to add empty words
+    if (word1 === "" || word2 === "") {
+        alert("Please enter a word in both fields!");
+        return;
+    }
+
+   const wordEntry = {
+        word1: word1,
+        word2: word2
+    };
+    
+    vocabularyList.push(wordEntry);
+
+    const row = document.createElement("tr");
+    const cell1 = document.createElement("td");
+    const cell2 = document.createElement("td");
+    buttonCell.appendChild(editButton);
+    buttonCell.appendChild(deleteButton);
+
+    cell1.textContent = word1;
+    cell2.textContent = word2;
+
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    row.appendChild(buttonCell);
+    
+
+    wordTableBody.appendChild(row);
+
+    //clears the input fields after adding a word
+    word1Input.value = "";
+    word2Input.value = "";
+
+    deleteButton.addEventListener("click", function() {
+
+        const index = vocabularyList.indexOf(wordEntry);
+
+        if (index > -1) {
+            vocabularyList.splice(index, 1);
+        }
+
+        row.remove();
+
+});
+
+editButton.addEventListener("click", function() {
+
+    let currentEditingRow = null;
+   currentEditingRow = row;
+
+   const editWord1 = document.getElementById("editWord1");
+   const editWord2 = document.getElementById("editWord2");
+
+   editWord1.value = cell1.textContent;
+   editWord2.value = cell2.textContent;
+
+    EditMenu.classList.remove('hidden');
+
+    //event for the save button in the edit menu
+    document.getElementById("SaveEdit").onclick = function() {
+
+        const newWord1 = editWord1.value;
+        const newWord2 = editWord2.value;
+
+        //prevents the user to save empty words
+        if (newWord1 === "" || newWord2 === "") {
+           alert("Please enter a word in both fields!");
+          return;
+     }
+
+     //array update
+     wordEntry.word1 = newWord1;
+     wordEntry.word2 = newWord2;
+
+     //table update
+     currentEditingRow.cells[0].textContent = newWord1;
+     currentEditingRow.cells[1].textContent = newWord2;
+
+     EditMenu.classList.add('hidden');
+     currentEditingRow = null;
+
+    }
+
+    //event for the cancel button in the edit menu
+    document.getElementById("CancelEdit").onclick = function() {
+
+        editWord1.value = "";
+        editWord2.value = "";
+
+        EditMenu.classList.add('hidden');
+        currentEditingRow = null;
+    }
+
+  
+
+});
+
+});
+
+Next3Button.addEventListener("click", function() {
+
+    if (EditMenu.classList.contains('hidden') === false) {
+        alert("Please finish editing the word before proceeding!");
+        return;
+    }
+
+    if (wordTableBody.children.length === 0) {
+        alert("Please add at least one word pair to your list before proceeding!");
+        return;
+    }
+
+    function loadReviewTable() {
+
+        const reviewTableBody = document.getElementById("reviewTable");
+        reviewTableBody.innerHTML = "";
+
+        for (let i = 0; i < vocabularyList.length; i++) {
+
+            const row = document.createElement("tr");
+
+            const cell1 = document.createElement("td");
+            const cell2 = document.createElement("td");
+
+            cell1.textContent = vocabularyList[i].word1;
+            cell2.textContent = vocabularyList[i].word2;
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+
+            reviewTableBody.appendChild(row);
+        }
+
+
+    }
+
+    loadReviewTable();
+
+    CreateListStep3.classList.add('hidden');
+    Confirmation.classList.remove('hidden');
+
+});
+
+Return4.addEventListener("click", function() {
+
+    const reviewTableBody = document.getElementById("reviewTable");
+    reviewTableBody.innerHTML = "";
+
+    Confirmation.classList.add('hidden');
+    CreateListStep3.classList.remove('hidden');
+
+});
+
+Finish.addEventListener("click", function() {
+
+    let allLists = JSON.parse(localStorage.getItem("allLists")) || [];
+
+    let finalListName = currentListName;
+    let counter = 2;
+
+    while (allLists.some(list => list.name === finalListName)) {
+        finalListName = currentListName + " (" + counter + ")";
+        counter++;
+    }
+
+    const CompleteList = {
+        name: finalListName,
+        language1: currentLanguage1,
+        language2: currentLanguage2,
+        vocabulary: vocabularyList
+    };
+
+    allLists.push(CompleteList);
+
+    localStorage.setItem(
+        "allLists", JSON.stringify(allLists)
+    )
+
+    FinishMenu.classList.remove('hidden');
+    Confirmation.classList.add('hidden');
+
+    if (finalListName !== currentListName) {
+        alert("A list with the name '" + currentListName + "' already exists. Your list has been saved as '" + finalListName + "'.");
+    }
+});

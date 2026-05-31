@@ -75,6 +75,46 @@
 
     </div>
 
+    <div id="EditWord" class="hidden">
+        <h3>Edit Word</h3>
+
+        <input type="text" id="editWord1" name="editWord1" placeholder="">
+        <input type="text" id="editWord2" name="editWord2" placeholder="">
+
+        <button id="SaveEdit">Save</button>
+        <button id="CancelEdit">Cancel</button>
+
+    </div>
+
+    <div id="Create-List-Confirmation" class="hidden">
+
+        <h1>Finish your list!</h1>
+        <h3>Make one last check before finishing!</h3>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th id="language1HeaderFinish"></th>
+                    <th id="language2HeaderFinish"></th>
+                </tr>
+            </thead>
+
+            <tbody id="reviewTable">
+
+            </tbody>
+        </table>
+
+        <button id="Return4">Change List</button>
+        <button id="FinishButton">Finish</button>
+    </div>
+
+    <div id="FinishMenu" class="hidden">
+
+        <h1>Congratulations!</h1>
+        <h3>Your list has been created successfully!</h3>
+
+        <button onclick="window.open('/index.html', '_self')">Return to Menu</button>
+
     <script src="/script.js"></script>
 
 </body>
