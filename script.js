@@ -29,6 +29,22 @@ async function loadWordOfTheDay() {
 //load the word of the day when the page loads
 loadWordOfTheDay();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //defines variables for the create list
 const CreateListMenu = document.getElementById('Create-List-Menu');
 const CreateListStep1 = document.getElementById('Create-List-Step1');
@@ -422,3 +438,47 @@ Finish.addEventListener("click", function() {
         alert("A list with the name '" + currentListName + "' already exists. Your list has been saved as '" + finalListName + "'.");
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+//not functional yet!!!
+
+function loadMyLists() {
+
+    const listContainer = document.getElementById("ListContainer");
+    listContainer.innerHTML = ""
+
+    const allLists = JSON.parse(localStorage.getItem("allLists")) || [];
+
+    if (allLists.length === 0) {
+        listContainer.textContent = "You have no lists yet. Create your first list by clicking the 'Create List' button!";
+        const createListButton = document.createElement("button");
+        createListButton.textContent = "Create List";
+        createListButton.onclick = function() {
+            window.open('/sub-html/CreateList.html', '_self');
+        }
+        listContainer.appendChild(createListButton);
+    }
+        return;
+
+        for (let i = 0; i < allLists.length; i++) {
+            const list = allLists[i];
+
+            const div = document.createElement("div");
+            div.className = "listItem";
+
+            div.innerHTML = `<h3>${list.name}</h3> <p>${list.language1} to ${list.language2}</p> <p>${list.vocabulary.length} word pairs</p>`;
+
+            container.appendChild(div);
+        }
+    }
+
+loadMyLists();
