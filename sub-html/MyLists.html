@@ -19,8 +19,8 @@
 
         </div>
 
-        <button id="ExportButton">Export all Lists</button>
-        <input type="file" id="ImportInput" accept=".json" placeholder="Import Lists">
+        <button id="ExportButton">Export all Lists (coming out soon)</button>
+        <input type="file" id="ImportInput" accept=".json" placeholder="Import Lists (coming out soon)">
 
      <button onclick="window.open('/index.html', '_self')">Back</button>
 
@@ -35,6 +35,15 @@
                 <!-- Vocabulary pairs will be dynamically added here for the user to view them -->
             </tbody>
         </table>
+
+        <!-- Note: Make the edit menu functional -->
+        <div id="MyListEditMenu" class="hidden">
+            <input type="text" id="MyEditWord1" placeholder="Edit Word in">
+            <input type="text" id="MyEditWord2" placeholder="Edit Word in">
+
+            <button id="MySaveEdit">Save Edit</button>
+            <button id="MyCancelEdit">Cancel Edit</button>
+        </div>
     
         <button id="BackToMyLists">Close</button>
     </div>

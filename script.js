@@ -551,16 +551,15 @@ function loadMyLists() {
 
                     row.appendChild(cell1);
                     row.appendChild(cell2);
-                    div.appendChild(editButton);
+                    row.appendChild(editButton);
                     viewTable.appendChild(row);
+
+                    
 
                     editButton.addEventListener("click", function() {
 
-                        localStorage.setItem("editingList", JSON.stringify({
-                           index: i,
-                           data: list
-                        }));
-                        window.open('/sub-html/CreateList.html', '_self');
+                       console.log("I HATE THIS!");
+                       // Note: Make this later
                         
                     });
 
