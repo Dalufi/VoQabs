@@ -13,9 +13,9 @@
      
         <h1>My Lists</h1>
 
-            <div id="ListContainer">
+         <div id="ListContainer">
 
-            
+            <!-- Lists will be dynamically added here -->
 
         </div>
 
@@ -24,6 +24,19 @@
 
      <button onclick="window.open('/index.html', '_self')">Back</button>
 
+    </div>
+
+    <div id="ViewMenu" class="hidden">
+        <h1 id="ViewListName"></h1>
+        <p id="ViewListLanguages"></p>
+        
+        <table>
+            <tbody id="ViewTable">
+                <!-- Vocabulary pairs will be dynamically added here for the user to view them -->
+            </tbody>
+        </table>
+    
+        <button id="BackToMyLists">Close</button>
     </div>
 
     <script src="/script.js"></script>

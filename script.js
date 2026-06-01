@@ -53,8 +53,9 @@ const CreateListStep3 = document.getElementById('Create-List-Step3');
 const EditMenu = document.getElementById('EditWord');
 const Confirmation = document.getElementById('Create-List-Confirmation');
 const FinishMenu = document.getElementById('FinishMenu');
+let editingList = JSON.parse(localStorage.getItem("editingList")) || null;
 
-const startButton = document.getElementById('StartButton');
+const startButton = document.getElementById('CreateListStartButton');
 const next1Button = document.getElementById('Next1Button');
 const Return1 = document.getElementById('Return1');
 const Return2 = document.getElementById('Return2');
@@ -65,8 +66,9 @@ const Next3Button = document.getElementById('Next3Button');
 const Return4 = document.getElementById('Return4');
 const Finish = document.getElementById('FinishButton');
 
+if (startButton && next1Button && Return1 && Return2 && Next2Button && Return3 && AddWordButton && Next3Button && Return4 && Finish) {
 //event for Start Button
-document.getElementById('CreateListStartButton').addEventListener("click", function() {
+startButton.addEventListener("click", function() {
     CreateListMenu.classList.add('hidden');
     CreateListStep1.classList.remove('hidden');
 });
@@ -212,10 +214,11 @@ Next2Button.addEventListener("click", function() {
     setupStep3();
 });
 
+
 const word1Input = document.getElementById("word1");
 const word2Input = document.getElementById("word2");
 const wordTableBody = document.getElementById("wordTable");
-const vocabularyList = [];
+let vocabularyList = [];
 
 //event for the third return button
 Return3.addEventListener("click", function() {
@@ -439,6 +442,7 @@ Finish.addEventListener("click", function() {
     }
 });
 
+}
 
 
 
@@ -447,37 +451,128 @@ Finish.addEventListener("click", function() {
 
 
 
-
-
-//not functional yet!!!
+//script for loading the lists from local storage and displaying them
 
 function loadMyLists() {
 
-    const listContainer = document.getElementById("ListContainer");
-    listContainer.innerHTML = ""
+    const ListMenu = document.getElementById("ListMenu");
+    const container = document.getElementById("ListContainer");
+    const ViewMenu = document.getElementById("ViewMenu");
+    container.innerHTML = ""
 
     const allLists = JSON.parse(localStorage.getItem("allLists")) || [];
 
     if (allLists.length === 0) {
-        listContainer.textContent = "You have no lists yet. Create your first list by clicking the 'Create List' button!";
+        container.textContent = "You have no lists yet. Create your first list by clicking the 'Create List' button!";
         const createListButton = document.createElement("button");
         createListButton.textContent = "Create List";
         createListButton.onclick = function() {
             window.open('/sub-html/CreateList.html', '_self');
         }
-        listContainer.appendChild(createListButton);
-    }
+        container.appendChild(createListButton);
         return;
+    }
 
         for (let i = 0; i < allLists.length; i++) {
             const list = allLists[i];
 
             const div = document.createElement("div");
             div.className = "listItem";
+            let pairForm = "";
 
-            div.innerHTML = `<h3>${list.name}</h3> <p>${list.language1} to ${list.language2}</p> <p>${list.vocabulary.length} word pairs</p>`;
+            if (list.vocabulary.length == 1) {
+                pairForm = "pair";
+            }
+                else {
+                    pairForm = "pairs";
+            }
+            
+            const viewButton = document.createElement("button");
+            viewButton.textContent = "View";
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+
+            div.innerHTML = `
+            <h3>${list.name}</h3>
+            <p>${list.language1} and ${list.language2}</p>
+            <p>${list.vocabulary.length} word ${pairForm}</p>
+            `;
 
             container.appendChild(div);
+            div.appendChild(viewButton);
+            div.appendChild(deleteButton);
+
+            deleteButton.addEventListener("click", function() {
+
+                const answer = confirm("Are you sure you want to delete '" + list.name + "'? This action cannot be undone.");
+
+                if (!answer) {
+                    return;
+                }
+
+                allLists.splice(i, 1);
+                localStorage.setItem("allLists", JSON.stringify(allLists));
+                loadMyLists();
+
+            });
+
+            viewButton.addEventListener("click", function() {
+
+                const viewTitle = document.getElementById("ViewListName");
+                const viewTable = document.getElementById("ViewTable");
+
+                console.log(document.getElementById("ViewListName"));
+                console.log(document.getElementById("ViewTable"));
+
+                viewTitle.textContent = list.name;
+                viewTable.innerHTML = "";
+
+                const backButton = document.getElementById("BackToMyLists");
+                backButton.onclick = function() {
+
+                    ViewMenu.classList.add('hidden');
+                    ListMenu.classList.remove('hidden');
+
+                    viewTitle.textContent = "";
+                    viewTable.innerHTML = "";
+
+                };
+                
+                for (let j = 0; j < list.vocabulary.length; j++) {
+
+                    const row = document.createElement("tr");
+                    const cell1 = document.createElement("td");
+                    const cell2 = document.createElement("td");
+                    const editButton = document.createElement("button");
+
+                    cell1.textContent = list.vocabulary[j].word1;
+                    cell2.textContent = list.vocabulary[j].word2;
+                    editButton.textContent = "Edit";
+
+                    row.appendChild(cell1);
+                    row.appendChild(cell2);
+                    div.appendChild(editButton);
+                    viewTable.appendChild(row);
+
+                    editButton.addEventListener("click", function() {
+
+                        localStorage.setItem("editingList", JSON.stringify({
+                           index: i,
+                           data: list
+                        }));
+                        window.open('/sub-html/CreateList.html', '_self');
+                        
+                    });
+
+                }
+
+            
+
+                ViewMenu.classList.remove('hidden');
+                ListMenu.classList.add('hidden');
+
+            });
+
         }
     }
 
