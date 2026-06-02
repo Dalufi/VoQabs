@@ -558,10 +558,63 @@ function loadMyLists() {
 
                     editButton.addEventListener("click", function() {
 
-                       console.log("I HATE THIS!");
-                       // Note: Make this later
-                        
-                    });
+    const editWord1 = document.getElementById("editWord1");
+    const editWord2 = document.getElementById("editWord2");
+    let currentEditingRow = row;
+
+    editWord1.value = cell1.textContent;
+    editWord2.value = cell2.textContent;
+
+    EditMenu.classList.remove('hidden');
+
+    // Event for the save button in the edit menu
+    const saveHandler = function() {
+
+        const newWord1 = editWord1.value;
+        const newWord2 = editWord2.value;
+
+        // Prevents the user from saving empty words
+        if (newWord1 === "" || newWord2 === "") {
+            alert("Please enter a word in both fields!");
+            return;
+        }
+
+        // Update the vocabulary list in localStorage
+        list.vocabulary[j].word1 = newWord1;
+        list.vocabulary[j].word2 = newWord2;
+
+        // Update allLists in localStorage
+        allLists[i] = list;
+        localStorage.setItem("allLists", JSON.stringify(allLists));
+
+        // Update the table
+        currentEditingRow.cells[0].textContent = newWord1;
+        currentEditingRow.cells[1].textContent = newWord2;
+
+        EditMenu.classList.add('hidden');
+        
+        // Remove event listeners to prevent conflicts
+        document.getElementById("SaveEdit").removeEventListener("click", saveHandler);
+        document.getElementById("CancelEdit").removeEventListener("click", cancelHandler);
+    };
+
+    // Event for the cancel button in the edit menu
+    const cancelHandler = function() {
+
+        editWord1.value = "";
+        editWord2.value = "";
+
+        EditMenu.classList.add('hidden');
+        
+        // Remove event listeners to prevent conflicts
+        document.getElementById("SaveEdit").removeEventListener("click", saveHandler);
+        document.getElementById("CancelEdit").removeEventListener("click", cancelHandler);
+    };
+
+    document.getElementById("SaveEdit").addEventListener("click", saveHandler);
+    document.getElementById("CancelEdit").addEventListener("click", cancelHandler);
+
+});
 
                 }
 
