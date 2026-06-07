@@ -530,6 +530,16 @@ function loadMyLists() {
                 const backButton = document.getElementById("BackToMyLists");
                 backButton.onclick = function() {
 
+                    const EditNameMenu = document.getElementById("MyListEditNameMenu");
+                    const NameInput = document.getElementById("MyEditListNameInput");
+                    const ListEditMenu = document.getElementById("MyListEditMenu");
+                    const MyEditWord1 = document.getElementById("MyEditWord1");
+                    const MyEditWord2 = document.getElementById("MyEditWord2");
+                    MyEditWord1.value = "";
+                    MyEditWord2.value = "";
+                    NameInput.value = "";
+                    ListEditMenu.classList.add('hidden');
+                    EditNameMenu.classList.add('hidden');
                     ViewMenu.classList.add('hidden');
                     ListMenu.classList.remove('hidden');
 
@@ -537,6 +547,43 @@ function loadMyLists() {
                     viewTable.innerHTML = "";
 
                 };
+
+                const editListName = document.getElementById("EditMyListName");
+                editListName.onclick = function() {
+
+                    let newListName = "";
+
+                    const EditNameMenu = document.getElementById("MyListEditNameMenu");
+                    const NameInput = document.getElementById("MyEditListNameInput");
+                    const SaveNameButton = document.getElementById("MySaveListNameEdit");
+                    const CancelNameButton = document.getElementById("MyCancelListNameEdit");
+
+                    EditNameMenu.classList.remove('hidden');
+
+                    CancelNameButton.onclick = function() {
+
+                        EditNameMenu.classList.add('hidden');
+                        NameInput.value = "";
+
+                    }
+
+                    SaveNameButton.onclick = function() {
+
+                        newListName = NameInput.value;
+
+                        if (newListName === "") {
+                            alert("Please enter a name for your list!");
+                            return;
+                        }
+
+                        list.name = newListName;
+                        localStorage.setItem("allLists", JSON.stringify(allLists));
+                        viewTitle.textContent = newListName;
+                        EditNameMenu.classList.add('hidden');
+                        NameInput.value = "";
+
+                    }
+                }
                 
                 for (let j = 0; j < list.vocabulary.length; j++) {
 
@@ -552,74 +599,73 @@ function loadMyLists() {
                     row.appendChild(cell1);
                     row.appendChild(cell2);
                     row.appendChild(editButton);
-                    viewTable.appendChild(row);
-
-                    
-
+                        viewTable.appendChild(row);
                     editButton.addEventListener("click", function() {
 
-    const editWord1 = document.getElementById("editWord1");
-    const editWord2 = document.getElementById("editWord2");
-    let currentEditingRow = row;
+                        const ListEditMenu = document.getElementById("MyListEditMenu");
+                        const MyEditWord1 = document.getElementById("MyEditWord1");
+                        const MyEditWord2 = document.getElementById("MyEditWord2");
+                        const SaveMyEdit = document.getElementById("MySaveEdit");
+                        const CancelMyEdit = document.getElementById("MyCancelEdit");
+                        const currentVocabulary = list.vocabulary[j];
+                      
+                        MyEditWord1.placeholder = "Edit word in " + longEditName1;
+                        MyEditWord2.placeholder = "Edit word in " + longEditName2;
 
-    editWord1.value = cell1.textContent;
-    editWord2.value = cell2.textContent;
+                        let MyFinalWord1 = "";
+                        let MyFinalWord2 = "";
 
-    EditMenu.classList.remove('hidden');
+                        MyEditWord1.value = cell1.textContent;
+                        MyEditWord2.value = cell2.textContent;
 
-    // Event for the save button in the edit menu
-    const saveHandler = function() {
+                        ListEditMenu.classList.remove('hidden');
 
-        const newWord1 = editWord1.value;
-        const newWord2 = editWord2.value;
+                        CancelMyEdit.onclick = function() {
 
-        // Prevents the user from saving empty words
-        if (newWord1 === "" || newWord2 === "") {
-            alert("Please enter a word in both fields!");
-            return;
-        }
+                            MyEditWord1.value = "";
+                            MyEditWord2.value = "";
+                            MyEditWord1.placeholder = "";
+                            MyEditWord2.placeholder = "";
 
-        // Update the vocabulary list in localStorage
-        list.vocabulary[j].word1 = newWord1;
-        list.vocabulary[j].word2 = newWord2;
+                            ListEditMenu.classList.add('hidden');
 
-        // Update allLists in localStorage
-        allLists[i] = list;
-        localStorage.setItem("allLists", JSON.stringify(allLists));
+                        }
 
-        // Update the table
-        currentEditingRow.cells[0].textContent = newWord1;
-        currentEditingRow.cells[1].textContent = newWord2;
+                        SaveMyEdit.onclick = function() {
 
-        EditMenu.classList.add('hidden');
-        
-        // Remove event listeners to prevent conflicts
-        document.getElementById("SaveEdit").removeEventListener("click", saveHandler);
-        document.getElementById("CancelEdit").removeEventListener("click", cancelHandler);
-    };
+                            MyFinalWord1 = MyEditWord1.value;
+                            MyFinalWord2 = MyEditWord2.value;
 
-    // Event for the cancel button in the edit menu
-    const cancelHandler = function() {
+                            if (MyFinalWord1 === "" || MyFinalWord2 === "") {
+                                alert("Please enter a word in both fields!");
+                                return;
+                            }
 
-        editWord1.value = "";
-        editWord2.value = "";
+                            currentVocabulary.word1 = MyFinalWord1;
+                            currentVocabulary.word2 = MyFinalWord2;
 
-        EditMenu.classList.add('hidden');
-        
-        // Remove event listeners to prevent conflicts
-        document.getElementById("SaveEdit").removeEventListener("click", saveHandler);
-        document.getElementById("CancelEdit").removeEventListener("click", cancelHandler);
-    };
+                            localStorage.setItem("allLists", JSON.stringify(allLists));
 
-    document.getElementById("SaveEdit").addEventListener("click", saveHandler);
-    document.getElementById("CancelEdit").addEventListener("click", cancelHandler);
+                            console.log(allLists);
 
-});
+                            cell1.textContent = MyFinalWord1;
+                            cell2.textContent = MyFinalWord2;
+
+                            ListEditMenu.classList.add('hidden');
+
+                            MyEditWord1.value = "";
+                            MyEditWord2.value = "";
+                            MyEditWord1.placeholder = "";
+                            MyEditWord2.placeholder = "";
+
+                        }
+
+                   
+                });
 
                 }
 
             
-
                 ViewMenu.classList.remove('hidden');
                 ListMenu.classList.add('hidden');
 
