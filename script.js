@@ -693,9 +693,13 @@ loadMyLists();
 //VocabularyChecker.html script
 //only template for now, will be implemented in the future
 
-function loadMyLists() {
+const CheckerMenu = document.getElementById("VocabularyCheckMenu");
+if (CheckerMenu) {
 
-    const ListMenu = document.getElementById("ListMenu");
+//still needs to be changed
+
+function loadMyListsChecker() {
+
     const container = document.getElementById("ListContainer");
     const ViewMenu = document.getElementById("ViewMenu");
     container.innerHTML = ""
@@ -913,3 +917,7 @@ function loadMyLists() {
 
         }
     }
+
+loadMyListsChecker();
+
+}
