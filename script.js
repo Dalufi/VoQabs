@@ -691,16 +691,13 @@ loadMyLists();
 
 
 //VocabularyChecker.html script
-//only template for now, will be implemented in the future
 
 const CheckerMenu = document.getElementById("VocabularyCheckMenu");
 if (CheckerMenu) {
 
-//still needs to be changed
-
 function loadMyListsChecker() {
 
-    const container = document.getElementById("vocabularyChecklistContainer");
+    const container = document.getElementById("VocabularyChecklistContainer");
     container.innerHTML = ""
 
     const allLists = JSON.parse(localStorage.getItem("allLists")) || [];
@@ -756,10 +753,49 @@ function loadMyListsChecker() {
             container.appendChild(div);
             div.appendChild(useButton);
 
-            useButton.addEventListener("click", function() {
+            useButton.addEventListener("click", async function() { 
 
-               //use Button function, still to be implemented
-                
+              const VocabularyCheckDiv = document.getElementById("VocabularyCheck");
+              const VocabularyCheckSelectionDiv = document.getElementById("VocabularyCheckSelection");
+              const VocabularyQuizDiv = document.getElementById("VocabularyQuiz");
+
+              const OutputLanguage1 = document.getElementById("LanguageOutput1");
+              const OutputLanguage2 = document.getElementById("LanguageOutput2");
+              
+              const shortlanguage1 = list.language1;
+              const shortlanguage2 = list.language2;
+
+              let longlanguage1 = "";
+              let longlanguage2 = "";
+
+              let languageSelectionJSON = [];
+
+              async function loadLanguageNames() {
+                  const response = await fetch('/assets/LanguageSelection.json');
+                  languageSelectionJSON = await response.json();
+              }
+
+              await loadLanguageNames();
+
+              const foundLanguage1 = languageSelectionJSON.find(
+                  lang => lang.code === shortlanguage1
+              );
+              const foundLanguage2 = languageSelectionJSON.find(
+                  lang => lang.code === shortlanguage2
+              );
+
+              longlanguage1 = foundLanguage1 ? foundLanguage1.name : shortlanguage1;
+              longlanguage2 = foundLanguage2 ? foundLanguage2.name : shortlanguage2;
+
+              OutputLanguage1.textContent = longlanguage1 + " → " + longlanguage2;
+              OutputLanguage2.textContent = longlanguage2 + " → " + longlanguage1;
+              
+              console.log(longlanguage1, longlanguage2);
+
+              container.classList.add('hidden');
+              VocabularyCheckDiv.classList.remove('hidden');
+              VocabularyCheckSelectionDiv.classList.remove('hidden');
+
             });
 
         }
