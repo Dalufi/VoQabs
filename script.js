@@ -700,8 +700,7 @@ if (CheckerMenu) {
 
 function loadMyListsChecker() {
 
-    const container = document.getElementById("ListContainer");
-    const ViewMenu = document.getElementById("ViewMenu");
+    const container = document.getElementById("vocabularyChecklistContainer");
     container.innerHTML = ""
 
     const allLists = JSON.parse(localStorage.getItem("allLists")) || [];
@@ -716,6 +715,20 @@ function loadMyListsChecker() {
         container.appendChild(createListButton);
         return;
     }
+    
+     if (allLists.length != 0) {
+
+                const ListOpionsButton = document.createElement("button");
+                ListOpionsButton.textContent = "List Options";
+                CheckerMenu.appendChild(ListOpionsButton);
+
+                 ListOpionsButton.addEventListener("click", function() {
+
+                window.open('/sub-html/MyLists.html', '_self');
+
+              });
+
+            }
 
         for (let i = 0; i < allLists.length; i++) {
             const list = allLists[i];
@@ -731,10 +744,8 @@ function loadMyListsChecker() {
                     pairForm = "pairs";
             }
             
-            const viewButton = document.createElement("button");
-            viewButton.textContent = "View";
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Delete";
+            const useButton = document.createElement("button");
+            useButton.textContent = "Use list";
 
             div.innerHTML = `
             <h3>${list.name}</h3>
@@ -743,176 +754,12 @@ function loadMyListsChecker() {
             `;
 
             container.appendChild(div);
-            div.appendChild(viewButton);
-            div.appendChild(deleteButton);
+            div.appendChild(useButton);
 
-            deleteButton.addEventListener("click", function() {
+            useButton.addEventListener("click", function() {
 
-                const answer = confirm("Are you sure you want to delete '" + list.name + "'? This action cannot be undone.");
-
-                if (!answer) {
-                    return;
-                }
-
-                allLists.splice(i, 1);
-                localStorage.setItem("allLists", JSON.stringify(allLists));
-                loadMyLists();
-
-            });
-
-            viewButton.addEventListener("click", function() {
-
-                const viewTitle = document.getElementById("ViewListName");
-                const viewTable = document.getElementById("ViewTable");
-
-                console.log(document.getElementById("ViewListName"));
-                console.log(document.getElementById("ViewTable"));
-
-                viewTitle.textContent = list.name;
-                viewTable.innerHTML = "";
-
-                const backButton = document.getElementById("BackToMyLists");
-                backButton.onclick = function() {
-
-                    const EditNameMenu = document.getElementById("MyListEditNameMenu");
-                    const NameInput = document.getElementById("MyEditListNameInput");
-                    const ListEditMenu = document.getElementById("MyListEditMenu");
-                    const MyEditWord1 = document.getElementById("MyEditWord1");
-                    const MyEditWord2 = document.getElementById("MyEditWord2");
-                    MyEditWord1.value = "";
-                    MyEditWord2.value = "";
-                    NameInput.value = "";
-                    ListEditMenu.classList.add('hidden');
-                    EditNameMenu.classList.add('hidden');
-                    ViewMenu.classList.add('hidden');
-                    ListMenu.classList.remove('hidden');
-
-                    viewTitle.textContent = "";
-                    viewTable.innerHTML = "";
-
-                };
-
-                const editListName = document.getElementById("EditMyListName");
-                editListName.onclick = function() {
-
-                    let newListName = "";
-
-                    const EditNameMenu = document.getElementById("MyListEditNameMenu");
-                    const NameInput = document.getElementById("MyEditListNameInput");
-                    const SaveNameButton = document.getElementById("MySaveListNameEdit");
-                    const CancelNameButton = document.getElementById("MyCancelListNameEdit");
-
-                    EditNameMenu.classList.remove('hidden');
-
-                    CancelNameButton.onclick = function() {
-
-                        EditNameMenu.classList.add('hidden');
-                        NameInput.value = "";
-
-                    }
-
-                    SaveNameButton.onclick = function() {
-
-                        newListName = NameInput.value;
-
-                        if (newListName === "") {
-                            alert("Please enter a name for your list!");
-                            return;
-                        }
-
-                        list.name = newListName;
-                        localStorage.setItem("allLists", JSON.stringify(allLists));
-                        viewTitle.textContent = newListName;
-                        EditNameMenu.classList.add('hidden');
-                        NameInput.value = "";
-
-                    }
-                }
+               //use Button function, still to be implemented
                 
-                for (let j = 0; j < list.vocabulary.length; j++) {
-
-                    const row = document.createElement("tr");
-                    const cell1 = document.createElement("td");
-                    const cell2 = document.createElement("td");
-                    const editButton = document.createElement("button");
-
-                    cell1.textContent = list.vocabulary[j].word1;
-                    cell2.textContent = list.vocabulary[j].word2;
-                    editButton.textContent = "Edit";
-
-                    row.appendChild(cell1);
-                    row.appendChild(cell2);
-                    row.appendChild(editButton);
-                        viewTable.appendChild(row);
-                    editButton.addEventListener("click", function() {
-
-                        const ListEditMenu = document.getElementById("MyListEditMenu");
-                        const MyEditWord1 = document.getElementById("MyEditWord1");
-                        const MyEditWord2 = document.getElementById("MyEditWord2");
-                        const SaveMyEdit = document.getElementById("MySaveEdit");
-                        const CancelMyEdit = document.getElementById("MyCancelEdit");
-                        const currentVocabulary = list.vocabulary[j];
-                      
-                        MyEditWord1.placeholder = "Edit word in " + longEditName1;
-                        MyEditWord2.placeholder = "Edit word in " + longEditName2;
-
-                        let MyFinalWord1 = "";
-                        let MyFinalWord2 = "";
-
-                        MyEditWord1.value = cell1.textContent;
-                        MyEditWord2.value = cell2.textContent;
-
-                        ListEditMenu.classList.remove('hidden');
-
-                        CancelMyEdit.onclick = function() {
-
-                            MyEditWord1.value = "";
-                            MyEditWord2.value = "";
-                            MyEditWord1.placeholder = "";
-                            MyEditWord2.placeholder = "";
-
-                            ListEditMenu.classList.add('hidden');
-
-                        }
-
-                        SaveMyEdit.onclick = function() {
-
-                            MyFinalWord1 = MyEditWord1.value;
-                            MyFinalWord2 = MyEditWord2.value;
-
-                            if (MyFinalWord1 === "" || MyFinalWord2 === "") {
-                                alert("Please enter a word in both fields!");
-                                return;
-                            }
-
-                            currentVocabulary.word1 = MyFinalWord1;
-                            currentVocabulary.word2 = MyFinalWord2;
-
-                            localStorage.setItem("allLists", JSON.stringify(allLists));
-
-                            console.log(allLists);
-
-                            cell1.textContent = MyFinalWord1;
-                            cell2.textContent = MyFinalWord2;
-
-                            ListEditMenu.classList.add('hidden');
-
-                            MyEditWord1.value = "";
-                            MyEditWord2.value = "";
-                            MyEditWord1.placeholder = "";
-                            MyEditWord2.placeholder = "";
-
-                        }
-
-                   
-                });
-
-                }
-
-            
-                ViewMenu.classList.remove('hidden');
-                ListMenu.classList.add('hidden');
-
             });
 
         }
