@@ -699,6 +699,7 @@ function loadMyListsChecker() {
 
     const container = document.getElementById("VocabularyChecklistContainer");
     container.innerHTML = ""
+    const VocabularyCheckMenu = document.getElementById("VocabularyCheckMenu");
 
     const allLists = JSON.parse(localStorage.getItem("allLists")) || [];
 
@@ -761,9 +762,12 @@ function loadMyListsChecker() {
 
               const OutputLanguage1 = document.getElementById("LanguageOutput1");
               const OutputLanguage2 = document.getElementById("LanguageOutput2");
-              
+              const Back1 = document.getElementById("Back1");
+
               const shortlanguage1 = list.language1;
               const shortlanguage2 = list.language2;
+
+              let FinalSelectedOutput = "";
 
               let longlanguage1 = "";
               let longlanguage2 = "";
@@ -792,9 +796,100 @@ function loadMyListsChecker() {
               
               console.log(longlanguage1, longlanguage2);
 
-              container.classList.add('hidden');
+              VocabularyCheckMenu.classList.add('hidden');
               VocabularyCheckDiv.classList.remove('hidden');
               VocabularyCheckSelectionDiv.classList.remove('hidden');
+
+              Back1.onclick = function() {
+
+                VocabularyCheckDiv.classList.add('hidden');
+                VocabularyCheckSelectionDiv.classList.add('hidden');
+                VocabularyCheckMenu.classList.remove('hidden');
+
+                OutputLanguage1.textContent = "";
+                OutputLanguage2.textContent = "";
+
+                longlanguage1 = "";
+                longlanguage2 = "";
+
+              }
+
+              function shuffleArray(array) {
+                  for (let i = array.length - 1; i > 0; i--) {
+                      const j = Math.floor(Math.random() * (i + 1));
+                      [array[i], array[j]] = [array[j], array[i]];
+                  }
+              }
+
+              function shuffleVocabularyList(vocabulary) {
+                  const shuffled = vocabulary.map(entry => ({ ...entry }));
+                  shuffleArray(shuffled);
+
+                  const order1 = Array.from({ length: shuffled.length }, (_, index) => index + 1);
+                  const order2 = Array.from({ length: shuffled.length }, (_, index) => index + 1);
+                  shuffleArray(order1);
+                  shuffleArray(order2);
+
+                  shuffled.forEach((entry, index) => {
+                      entry.order1 = order1[index];
+                      entry.order2 = order2[index];
+                  });
+
+                  return shuffled;
+              }
+
+              function startQuiz(selectedOutput) {
+                  console.log(order1)
+                  console.log(order2)
+                  //to be edited
+              }
+
+              function MoveToConfirm(SelectedOutput) {
+
+                const SelectionConfirmDiv = document.getElementById("SelectionConfirm");
+                const ConfirmPrompt = document.getElementById("ConfirmPrompt");
+                const ConfirmPromptYes = document.getElementById("ConfirmPromptYes");
+                const ConfirmPromptNo = document.getElementById("ConfirmPromptNo");
+
+                if (SelectedOutput === 1) {
+                    ConfirmPrompt.textContent = "Are you sure you want to start the vocabulary check with " + longlanguage1 + "→" + longlanguage2 + "?";
+                }
+               else if (SelectedOutput === 2) {
+                    ConfirmPrompt.textContent = "Are you sure you want to start the vocabulary check with " + longlanguage2 + "→" + longlanguage1 + "?";
+                }
+                else {
+                    alert("An error occurred. Please try again.");
+                }
+
+                FinalSelectedOutput = SelectedOutput;
+
+                VocabularyCheckSelectionDiv.classList.add('hidden');
+                SelectionConfirmDiv.classList.remove('hidden');
+
+                ConfirmPromptYes.onclick = function() {
+                    startQuiz(FinalSelectedOutput);
+                };
+
+                ConfirmPromptNo.onclick = function() {
+                    SelectionConfirmDiv.classList.add('hidden');
+                    VocabularyCheckSelectionDiv.classList.remove('hidden');
+
+                    FinalSelectedOutput = "";
+                    ConfirmPrompt.textContent = "";
+                };
+              }
+
+              OutputLanguage1.onclick = function() {
+
+                MoveToConfirm(1);
+
+              }
+
+              OutputLanguage2.onclick = function() {
+
+                MoveToConfirm(2);
+
+              }
 
             });
 
