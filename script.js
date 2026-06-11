@@ -759,6 +759,7 @@ function loadMyListsChecker() {
               const VocabularyCheckDiv = document.getElementById("VocabularyCheck");
               const VocabularyCheckSelectionDiv = document.getElementById("VocabularyCheckSelection");
               const VocabularyQuizDiv = document.getElementById("VocabularyQuiz");
+              const SelectionConfirmDiv = document.getElementById("SelectionConfirm");
 
               const OutputLanguage1 = document.getElementById("LanguageOutput1");
               const OutputLanguage2 = document.getElementById("LanguageOutput2");
@@ -814,39 +815,23 @@ function loadMyListsChecker() {
 
               }
 
-              function shuffleArray(array) {
-                  for (let i = array.length - 1; i > 0; i--) {
-                      const j = Math.floor(Math.random() * (i + 1));
-                      [array[i], array[j]] = [array[j], array[i]];
-                  }
-              }
+              function startQuiz() {
+                 SelectionConfirmDiv.classList.add('hidden');
+                 VocabularyQuizDiv.classList.remove('hidden');
+                 console.log(list);
+                 console.log(list.vocabulary);
+                 console.log(list.vocabulary[0])
+                 console.log(list.vocabulary[0].word1);
 
-              function shuffleVocabularyList(vocabulary) {
-                  const shuffled = vocabulary.map(entry => ({ ...entry }));
-                  shuffleArray(shuffled);
+                 for (let i = 1; i <= 10; i++) {
+                    console.log(i);
+                 }
+                 
 
-                  const order1 = Array.from({ length: shuffled.length }, (_, index) => index + 1);
-                  const order2 = Array.from({ length: shuffled.length }, (_, index) => index + 1);
-                  shuffleArray(order1);
-                  shuffleArray(order2);
-
-                  shuffled.forEach((entry, index) => {
-                      entry.order1 = order1[index];
-                      entry.order2 = order2[index];
-                  });
-
-                  return shuffled;
-              }
-
-              function startQuiz(selectedOutput) {
-                  console.log(order1)
-                  console.log(order2)
-                  //to be edited
               }
 
               function MoveToConfirm(SelectedOutput) {
 
-                const SelectionConfirmDiv = document.getElementById("SelectionConfirm");
                 const ConfirmPrompt = document.getElementById("ConfirmPrompt");
                 const ConfirmPromptYes = document.getElementById("ConfirmPromptYes");
                 const ConfirmPromptNo = document.getElementById("ConfirmPromptNo");
@@ -867,7 +852,7 @@ function loadMyListsChecker() {
                 SelectionConfirmDiv.classList.remove('hidden');
 
                 ConfirmPromptYes.onclick = function() {
-                    startQuiz(FinalSelectedOutput);
+                    startQuiz();
                 };
 
                 ConfirmPromptNo.onclick = function() {
