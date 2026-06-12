@@ -885,4 +885,4 @@ loadMyListsChecker();
 
 }
 
-//Hi, I'm Lucas I'm Hannes
+//Hi, I'm Lucas and I'm Hannes
