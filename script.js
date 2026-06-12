@@ -818,13 +818,16 @@ function loadMyListsChecker() {
               function startQuiz() {
                  SelectionConfirmDiv.classList.add('hidden');
                  VocabularyQuizDiv.classList.remove('hidden');
-                 console.log(list);
-                 console.log(list.vocabulary);
-                 console.log(list.vocabulary[0])
-                 console.log(list.vocabulary[0].word1);
+                 
+                 const vocabulary = list.vocabulary
 
-                 for (let i = 1; i <= 10; i++) {
-                    console.log(i);
+                 for (let i = 0; i < vocabulary.length ; i++) {
+
+                    console.log(vocabulary[i]);
+                    //to be done :P
+                    
+
+
                  }
                  
 
