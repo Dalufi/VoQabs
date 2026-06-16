@@ -760,10 +760,12 @@ function loadMyListsChecker() {
               const VocabularyCheckSelectionDiv = document.getElementById("VocabularyCheckSelection");
               const VocabularyQuizDiv = document.getElementById("VocabularyQuiz");
               const SelectionConfirmDiv = document.getElementById("SelectionConfirm");
+              const CorrectWrongDiv = document.getElementById("CorrectWrong");
 
               const OutputLanguage1 = document.getElementById("LanguageOutput1");
               const OutputLanguage2 = document.getElementById("LanguageOutput2");
               const Back1 = document.getElementById("Back1");
+              const QuestionAnswer = document.getElementById("QuestionAnswer");
 
               const shortlanguage1 = list.language1;
               const shortlanguage2 = list.language2;
@@ -815,23 +817,32 @@ function loadMyListsChecker() {
 
               }
 
-              function startQuiz() {
-                 SelectionConfirmDiv.classList.add('hidden');
-                 VocabularyQuizDiv.classList.remove('hidden');
+             function startQuiz(shuffledVocabulary) {
+                
+                //this annoying complex stuff is for later! :)
+
+             }
+
+             function shuffleVocabularies() {
+                      SelectionConfirmDiv.classList.add('hidden');
+                      VocabularyQuizDiv.classList.remove('hidden');
+
+                      // make a shallow copy of the vocabulary then shuffle it
+                      const vocabulary = list.vocabulary.slice();
+
+                      // shuffle
+                      for (let i = vocabulary.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [vocabulary[i], vocabulary[j]] = [vocabulary[j], vocabulary[i]];
+                      }
+
+                      // shuffledVocabulary is now a simple array of vocabulary entries in random order
+                      const shuffledVocabulary = vocabulary;
+                      console.log(shuffledVocabulary);
+
+                      startQuiz(shuffledVocabulary)
+                  }
                  
-                 const vocabulary = list.vocabulary
-
-                 for (let i = 0; i < vocabulary.length ; i++) {
-
-                    console.log(vocabulary[i]);
-                    //to be done :P
-                    
-
-
-                 }
-                 
-
-              }
 
               function MoveToConfirm(SelectedOutput) {
 
@@ -855,7 +866,7 @@ function loadMyListsChecker() {
                 SelectionConfirmDiv.classList.remove('hidden');
 
                 ConfirmPromptYes.onclick = function() {
-                    startQuiz();
+                    shuffleVocabularies();
                 };
 
                 ConfirmPromptNo.onclick = function() {
