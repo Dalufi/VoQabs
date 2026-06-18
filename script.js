@@ -761,6 +761,7 @@ function loadMyListsChecker() {
               const VocabularyQuizDiv = document.getElementById("VocabularyQuiz");
               const SelectionConfirmDiv = document.getElementById("SelectionConfirm");
               const CorrectWrongDiv = document.getElementById("CorrectWrong");
+              const ResultsDiv = document.getElementById("Results")
 
               const OutputLanguage1 = document.getElementById("LanguageOutput1");
               const OutputLanguage2 = document.getElementById("LanguageOutput2");
@@ -819,13 +820,127 @@ function loadMyListsChecker() {
 
              function startQuiz(shuffledVocabulary) {
                 
-                //this annoying complex stuff is for later! :)
+                SelectionConfirmDiv.classList.add('hidden');
+                VocabularyQuizDiv.classList.remove('hidden');
 
-             }
+                 const FirstWordText = document.getElementById("QuestionWord");
+                 const QuestionAnswer = document.getElementById("QuestionAnswer");
+                 const EnterQuestion = document.getElementById("EnterQuestion");
+                 const QuestionResultBox = document.getElementById("CorrectWrongResult");
+                 const CorrectWrongNext = document.getElementById("CorrectWrongNext");
+                 const CancelButton = document.getElementById("CancelQuiz")
+
+                 let QuestionIndex = 0;
+                 let CorrectWord = "";
+                 let End = false
+                 let WrongWords = [];
+
+                function DecideShowQeustion() {
+                if (FinalSelectedOutput === 1) {
+
+                    function ShowQuestion () {
+
+                        FirstWordText.textContent = shuffledVocabulary[QuestionIndex].word1;
+                        QuestionAnswer.placeholder = "Translate " + shuffledVocabulary[QuestionIndex].word1 + "!";
+                        if (EnterQuestion.classList.contains('hidden')) {
+                            EnterQuestion.classList.remove('hidden');
+                        }
+                        return shuffledVocabulary[QuestionIndex].word2;
+
+                    }
+
+                    CorrectWord = ShowQuestion();
+
+                }
+                
+                else if (FinalSelectedOutput === 2) {
+
+                    function ShowQuestion () {
+
+                        FirstWordText.textContent = shuffledVocabulary[QuestionIndex].word2;
+                        QuestionAnswer.placeholder = "Translate " + shuffledVocabulary[QuestionIndex].word2 + "!";
+                         if (EnterQuestion.classList.contains('hidden')) {
+                            EnterQuestion.classList.remove('hidden');
+                        }
+                        return shuffledVocabulary[QuestionIndex].word1;
+
+                    }
+
+                    CorrectWord = ShowQuestion();
+
+                }
+            }
+
+                DecideShowQeustion();
+                console.log(CorrectWord);
+
+                CancelButton.onclick = function() {
+
+                    const answer = confirm("Are you sure you want to End the Quiz? All progress will be lost.");
+
+                    if (answer) {
+                       location.reload();
+                    }
+
+                };
+
+                EnterQuestion.onclick = function() {    
+                    
+                    EnterQuestion.classList.add('hidden');
+                    const EnteredWord = QuestionAnswer.value;
+
+                    if (QuestionIndex + 1 === shuffledVocabulary.length) {
+                        End = true;
+                        CorrectWrongNext.textContent = "Finish!";
+                    }
+                    
+                    if (EnteredWord.toLowerCase() === CorrectWord.toLowerCase()) {
+
+                        QuestionAnswer.value = "";
+                        QuestionResultBox.textContent = "Correct! " + (QuestionIndex + 1) + "/" + shuffledVocabulary.length;
+                        CorrectWrongDiv.classList.remove('hidden');
+
+                    }
+                    else {
+
+                        QuestionAnswer.value = "";
+                        QuestionResultBox.textContent = "Incorrect! The word was " + CorrectWord + ". " + (QuestionIndex + 1) + "/" + shuffledVocabulary.length;
+                        WrongWords.push(shuffledVocabulary[QuestionIndex]);
+                        CorrectWrongDiv.classList.remove('hidden');
+
+                    }
+
+                    CorrectWrongNext.onclick = function() {
+
+                        CorrectWrongDiv.classList.add('hidden');
+
+                        if (End === true) {
+
+                            //nothing here yet!
+                            console.log("This is the end???")
+
+                        }
+                        
+                        else {
+
+                        QuestionIndex++;
+                        console.log(QuestionIndex);
+                        DecideShowQeustion();
+
+                        }
+
+
+                    }
+
+                }
+
+
+
+
+
+            }
 
              function shuffleVocabularies() {
-                      SelectionConfirmDiv.classList.add('hidden');
-                      VocabularyQuizDiv.classList.remove('hidden');
 
                       // make a shallow copy of the vocabulary then shuffle it
                       const vocabulary = list.vocabulary.slice();
@@ -838,7 +953,6 @@ function loadMyListsChecker() {
 
                       // shuffledVocabulary is now a simple array of vocabulary entries in random order
                       const shuffledVocabulary = vocabulary;
-                      console.log(shuffledVocabulary);
 
                       startQuiz(shuffledVocabulary)
                   }
