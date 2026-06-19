@@ -776,6 +776,8 @@ function loadMyListsChecker() {
               let longlanguage1 = "";
               let longlanguage2 = "";
 
+              let WrongWords = [];
+
               let languageSelectionJSON = [];
 
               async function loadLanguageNames() {
@@ -828,12 +830,12 @@ function loadMyListsChecker() {
                  const EnterQuestion = document.getElementById("EnterQuestion");
                  const QuestionResultBox = document.getElementById("CorrectWrongResult");
                  const CorrectWrongNext = document.getElementById("CorrectWrongNext");
-                 const CancelButton = document.getElementById("CancelQuiz")
+                 const CancelButton = document.getElementById("CancelQuiz");
+                 const RefreshRoundButton = document.getElementById("RefreshRoundButton");
 
                  let QuestionIndex = 0;
                  let CorrectWord = "";
-                 let End = false
-                 let WrongWords = [];
+                 let End = false;
 
                 function DecideShowQeustion() {
                 if (FinalSelectedOutput === 1) {
@@ -916,8 +918,42 @@ function loadMyListsChecker() {
 
                         if (End === true) {
 
-                            //nothing here yet!
-                            console.log("This is the end???")
+                            const ResultsText = document.getElementById("ResultsText");
+                            const WrongWordsText = document.getElementById("WrongWordsText");
+                            const ResultsContainer = document.getElementById("ResultsContainer");
+                            const ResultPrecentText = document.getElementById("ResultPrecent");
+                            const RightWords = document.getElementById("AllRightWordsText");
+                            const ActualPercentage = ((shuffledVocabulary.length - WrongWords.length) / shuffledVocabulary.length) * 100;
+
+                            ResultPrecentText.textContent = "You knew " + ActualPercentage + "% of the words!"
+
+                            if (WrongWords.length != 0) {   
+
+                                WrongWordsText.classList.remove('hidden');
+
+                                for (let i = 0; i < WrongWords.length; i++) {
+
+                                    const CurrentWord = WrongWords[i];
+                                    const WrongText = document.createElement("p");
+
+                                    WrongText.textContent = CurrentWord.word1 + " -> " + CurrentWord.word2;
+                                    ResultsContainer.appendChild(WrongText);
+                                    console.log(WrongWords);
+
+                                }
+
+                                RefreshRoundButton.classList.remove('hidden');
+                                //Refresh Round still not functional without breaking the whole site D:
+
+                            }
+                            else {
+
+                                RightWords.classList.remove('hidden');
+
+                            }
+
+                            VocabularyQuizDiv.classList.add('hidden');
+                            ResultsDiv.classList.remove('hidden');
 
                         }
                         
@@ -940,10 +976,10 @@ function loadMyListsChecker() {
 
             }
 
-             function shuffleVocabularies() {
+             function shuffleVocabularies(SelectedList) {
 
                       // make a shallow copy of the vocabulary then shuffle it
-                      const vocabulary = list.vocabulary.slice();
+                      const vocabulary = SelectedList.slice();
 
                       // shuffle
                       for (let i = vocabulary.length - 1; i > 0; i--) {
@@ -980,7 +1016,7 @@ function loadMyListsChecker() {
                 SelectionConfirmDiv.classList.remove('hidden');
 
                 ConfirmPromptYes.onclick = function() {
-                    shuffleVocabularies();
+                    shuffleVocabularies(list.vocabulary);
                 };
 
                 ConfirmPromptNo.onclick = function() {
@@ -1003,6 +1039,14 @@ function loadMyListsChecker() {
                 MoveToConfirm(2);
 
               }
+
+               RefreshRoundButton.onclick = function () {
+
+                //I'll have to reset everything too
+
+                shuffleVocabularies(WrongWords);
+
+               }
 
             });
 
