@@ -83,7 +83,7 @@ MenuCreate.onclick = function() {
         }
     }
 
-    window.open('/index.html', '_self');
+    window.open('../index.html', '_self');
 
 }
 
