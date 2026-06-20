@@ -12,11 +12,22 @@ Tired of failing vocabulary checks in school or do you just want to challenge yo
 > `VoQabs`is still not fully done yet, there might still be some bugs lurking around. We do really appreaciate any type of feedback.
 
 ## Changes! (v.x.x):
+### Additions:
+- `VoQabs`menu
+- "Word of the day"
+- Menu to create vocabulary lists
+- ability to save vocabulary lists in the user's local storage
+- Menu to view, edit and delete already available lists
+- Quiz Menu 
+- Quiz Menu results
+- Refresh-round after the quiz
+> [!NOTE]
+> The refresh-round option should be functionable but is still considered as unstable for now.
 
-> There's nothing to find here
+[More info here!](https://github.com/Dalufi/VoQabs/releases/tag/v0.1.0-beta)
 
 ## How it works!
-(inser explanation here)
+> (will be added later)
 
 ## Huge thanks!
 Many thanks to our wonderful team! This project would not be possible without their cooperation and creativity.
