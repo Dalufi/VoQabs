@@ -70,6 +70,14 @@ const Next3Button = document.getElementById('Next3Button');
 const Return4 = document.getElementById('Return4');
 const Finish = document.getElementById('FinishButton');
 
+// Builds the correct asset URL for the current page location.
+function getAssetUrl(path) {
+    if (window.location.pathname.includes('/sub-html/')) {
+        return '../' + path;
+    }
+    return path;
+}
+
 if (startButton && next1Button && Return1 && Return2 && Next2Button && Return3 && AddWordButton && Next3Button && Return4 && Finish) {
 
 MenuCreate.onclick = function() {
