@@ -130,12 +130,15 @@ function getAssetUrl(path) {
 
 //loads the languages from the JSON file
 async function loadLanguages() {
-    const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
-    const languages = await response.json();
-
-    //defines the select
     const language1Select = document.getElementById('language1');
     const language2Select = document.getElementById('language2');
+
+    if (!language1Select || !language2Select) {
+        return;
+    }
+
+    const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
+    const languages = await response.json();
 
     const placeholder1 = document.createElement("option");
     placeholder1.textContent = "Select a language...";
@@ -153,8 +156,8 @@ async function loadLanguages() {
 
     //load the languages when the page loads
     for (let i = 0; i < languages.length; i++) {
-    const language = languages[i];
-    
+        const language = languages[i];
+
          //loads options for the first select
          const option1 = document.createElement("option");
          option1.textContent = language.name;
