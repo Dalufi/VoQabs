@@ -58,6 +58,7 @@ const Confirmation = document.getElementById('Create-List-Confirmation');
 const FinishMenu = document.getElementById('FinishMenu');
 let editingList = JSON.parse(localStorage.getItem("editingList")) || null;
 
+const MenuCreate = document.getElementById('MenuCreate');
 const startButton = document.getElementById('CreateListStartButton');
 const next1Button = document.getElementById('Next1Button');
 const Return1 = document.getElementById('Return1');
@@ -70,6 +71,22 @@ const Return4 = document.getElementById('Return4');
 const Finish = document.getElementById('FinishButton');
 
 if (startButton && next1Button && Return1 && Return2 && Next2Button && Return3 && AddWordButton && Next3Button && Return4 && Finish) {
+
+MenuCreate.onclick = function() {
+
+    if (CreateListMenu.classList.contains('hidden') && FinishMenu.classList.contains('hidden')) {
+        
+        const answer = confirm("Going back to the menu will make you lose all your progress, do you want to procede?");
+
+        if (!answer) {
+            return;
+        }
+    }
+
+    window.open('/index.html', '_self');
+
+}
+
 //event for Start Button
 startButton.addEventListener("click", function() {
     CreateListMenu.classList.add('hidden');
@@ -761,12 +778,15 @@ function loadMyListsChecker() {
               const VocabularyQuizDiv = document.getElementById("VocabularyQuiz");
               const SelectionConfirmDiv = document.getElementById("SelectionConfirm");
               const CorrectWrongDiv = document.getElementById("CorrectWrong");
-              const ResultsDiv = document.getElementById("Results")
+              const ResultsDiv = document.getElementById("Results");
+              const RefreshRoundDiv = document.getElementById("RefreshRoundPrompt");
 
               const OutputLanguage1 = document.getElementById("LanguageOutput1");
               const OutputLanguage2 = document.getElementById("LanguageOutput2");
               const Back1 = document.getElementById("Back1");
               const QuestionAnswer = document.getElementById("QuestionAnswer");
+              const StartRefreshRound = document.getElementById("StartRefreshRound");
+              const CancelRefreshRound = document.getElementById("CancelRefreshRound");
 
               const shortlanguage1 = list.language1;
               const shortlanguage2 = list.language2;
@@ -824,6 +844,8 @@ function loadMyListsChecker() {
                 
                 SelectionConfirmDiv.classList.add('hidden');
                 VocabularyQuizDiv.classList.remove('hidden');
+
+                WrongWords = [];
 
                  const FirstWordText = document.getElementById("QuestionWord");
                  const QuestionAnswer = document.getElementById("QuestionAnswer");
@@ -923,7 +945,25 @@ function loadMyListsChecker() {
                             const ResultsContainer = document.getElementById("ResultsContainer");
                             const ResultPrecentText = document.getElementById("ResultPrecent");
                             const RightWords = document.getElementById("AllRightWordsText");
+                            const EndQuizButton = document.getElementById("EndQuiz");
+                            let RefreshPossible = false
                             const ActualPercentage = ((shuffledVocabulary.length - WrongWords.length) / shuffledVocabulary.length) * 100;
+
+                            if (ActualPercentage === 100) {
+                                ResultsText.textContent = "You've done an amazing job!";
+                            }
+                            else if (ActualPercentage >= 75 && ActualPercentage != 100) {
+                                ResultsText.textContent = "Good job! You knew most of the words.";
+                            }
+                            else if (ActualPercentage >= 50 && ActualPercentage < 75) {
+                                ResultsText.textContent = "You did pretty well but you can surely do better!";
+                            }
+                            else if (ActualPercentage >= 25 && ActualPercentage < 50) {
+                                ResultsText.textContent = "Your results might not be the best but I believe you can do better.";
+                            }
+                            else if (ActualPercentage < 25) {
+                                ResultsText.textContent = "All it takes is just a bit more of learning!";
+                            }
 
                             ResultPrecentText.textContent = "You knew " + ActualPercentage + "% of the words!"
 
@@ -942,13 +982,47 @@ function loadMyListsChecker() {
 
                                 }
 
+                                RefreshPossible = true;
                                 RefreshRoundButton.classList.remove('hidden');
                                 //Refresh Round still not functional without breaking the whole site D:
+
+                                RefreshRoundButton.onclick = function() {
+
+                                    ResultsDiv.classList.add('hidden');
+                                    RefreshRoundDiv.classList.remove('hidden');
+
+                                    QuestionIndex = 0;
+                                    CorrectWord = "";
+                                    End = false;
+
+                                    ResultsContainer.innerHTML = "";
+
+                                    ResultsText.textContent = "Refresh Round!";
+                                    RefreshRoundButton.classList.add('hidden');
+
+                                }
 
                             }
                             else {
 
                                 RightWords.classList.remove('hidden');
+
+                            }
+
+                            EndQuizButton.onclick = function() {
+
+                                if (RefreshPossible === true) {
+
+                                    const answer = confirm("You can still make a refresh round, do you still want to end the Quiz?");
+                                    if (answer) {
+                                        location.reload();
+                                    }
+
+                                }
+
+                                if (RefreshPossible === false) {
+                                    location.reload();
+                                }
 
                             }
 
@@ -992,6 +1066,25 @@ function loadMyListsChecker() {
 
                       startQuiz(shuffledVocabulary)
                   }
+                
+                StartRefreshRound.onclick = function() {
+
+                    const CorrectWrongNext = document.getElementById("CorrectWrongNext");
+                    CorrectWrongNext.textContent = "Next!";
+
+                    shuffleVocabularies(WrongWords);
+                    RefreshRoundDiv.classList.add('hidden');
+
+                }
+
+                CancelRefreshRound.onclick = function() {
+
+                    const answer = confirm("This will end the Quiz, do you still want to continue?");
+                    if (answer) {
+                        location.reload();
+                    }
+
+                }
                  
 
               function MoveToConfirm(SelectedOutput) {
@@ -1039,14 +1132,6 @@ function loadMyListsChecker() {
                 MoveToConfirm(2);
 
               }
-
-               RefreshRoundButton.onclick = function () {
-
-                //I'll have to reset everything too
-
-                shuffleVocabularies(WrongWords);
-
-               }
 
             });
 
