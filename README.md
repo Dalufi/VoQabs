@@ -11,7 +11,7 @@ Tired of failing vocabulary checks in school or do you just want to challenge yo
 > [!WARNING]
 > `VoQabs`is still not fully done yet, there might still be some bugs lurking around. We do really appreaciate any type of feedback.
 
-## Changes! (v.x.x):
+## Changes! (v0.1.0-beta):
 ### Additions:
 - `VoQabs`menu
 - "Word of the day"
