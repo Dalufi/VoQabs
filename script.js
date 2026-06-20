@@ -489,7 +489,7 @@ function loadMyLists() {
         const createListButton = document.createElement("button");
         createListButton.textContent = "Create List";
         createListButton.onclick = function() {
-            window.open('/sub-html/CreateList.html', '_self');
+            window.open('../sub-html/CreateList.html', '_self');
         }
         container.appendChild(createListButton);
         return;
@@ -725,7 +725,7 @@ function loadMyListsChecker() {
         const createListButton = document.createElement("button");
         createListButton.textContent = "Create List";
         createListButton.onclick = function() {
-            window.open('/sub-html/CreateList.html', '_self');
+            window.open('../sub-html/CreateList.html', '_self');
         }
         container.appendChild(createListButton);
         return;
@@ -739,7 +739,7 @@ function loadMyListsChecker() {
 
                  ListOpionsButton.addEventListener("click", function() {
 
-                window.open('/sub-html/MyLists.html', '_self');
+                window.open('../sub-html/MyLists.html', '_self');
 
               });
 
