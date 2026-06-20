@@ -128,14 +128,6 @@ next1Button.addEventListener("click", function() {
     CreateListStep2.classList.remove('hidden');
 });
 
-// Builds the correct asset URL for the current page location.
-function getAssetUrl(path) {
-    if (window.location.pathname.includes('/sub-html/')) {
-        return '../' + path;
-    }
-    return path;
-}
-
 //loads the languages from the JSON file
 async function loadLanguages() {
     const language1Select = document.getElementById('language1');
