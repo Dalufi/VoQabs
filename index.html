@@ -13,16 +13,20 @@
 <body>
 <!-- Menu class -->
 <div id="menu">
-    <h1>VoQabs</h1>
+    <img class="logo" src="/assets/VoQabs_Logo.png">
     <h2>Welcome! Choose an option!</h2>
 
     <!-- sends user to different pages -->
+     <div class="start">
     <button onclick="location.href='sub-html/VocabularyCheck.html'">Start Vocabulary Check</button>
+    <div class="list">
     <button onclick="location.href='sub-html/MyLists.html'">My Lists</button>
     <button onclick="location.href='sub-html/CreateList.html'">Create List</button>
-    
+     </div>
+        </div>
+        
     <!-- sets the word of the day -->
-    <p>Today's word of the day is... <span id="wordOfTheDay"></span>!</p>
+    <p class="wordOfTheDay">Today's word of the day is... <span id="wordOfTheDay"></span>!</p>
 </div>
 
     <script src="script.js"></script>

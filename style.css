@@ -1,4 +1,50 @@
-/* defines the "hidden" class to hide elements */
-.hidden {
-    display: none;
+body {
+    background-color: #FFFFEF;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    font-family: Dejavu Sans Mono, monospace;
+}
+.logo {
+    width: 400px;
+    height: auto;
+    margin-bottom: 20px;
+}
+h2 {
+    font-size: 50px;
+    margin-bottom: 40px;
+}
+button {
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    padding: 20px 40px;
+    border-radius: 9px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+button:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+button:active {
+    transform: scale(0.97);
+}
+.start {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px;
+}
+.list {
+    display: flex;
+    gap: 130px;
+    margin-top: 80px;
+}
+.wordOfTheDay {
+    font-size: 40px;
+    margin-top: 90px;
 }
