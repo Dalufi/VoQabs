@@ -1,3 +1,7 @@
+.hidden {
+    display: none;
+}   
+
 body {
     background-color: #FFFFEF;
     text-align: center;
@@ -97,8 +101,8 @@ body {
     background-color: #FFFFAA;
 }
 .square1 {
-    width: 30px;
-    height: 55px;
+    width: 40px;
+    height: 70px;
     border: 4px solid orange;
     border-radius: 8px;
     background-color: #FFFFAA;
@@ -117,8 +121,8 @@ body {
     border-radius: 8px;
 }
 .square3 {
-    width: 40px;
-    height: 70px;
+    width: 30px;
+    height: 55px;
     border: 4px solid orange;
     transform: rotate(55deg);
     background-color: #FFFFAA;
@@ -161,6 +165,245 @@ body {
     left: 54%;
     transform: rotate(65deg);
 }
+.headline {
+    font-size: 50px;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+.underline {
+    font-size: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#CreateListStartButton {
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    padding: 12.5px 25px;
+    border-radius: 5.625px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#CreateListStartButton:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#CreateListStartButton:active {
+    transform: scale(0.97);
+}
+#Return1 {
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    padding: 12.5px 25px;
+    border-radius: 5.625px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#Return1:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#Return1:active {
+    transform: scale(0.97);
+}
+#Next1Button {
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    padding: 12.5px 25px;
+    border-radius: 5.625px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#Next1Button:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#Next1Button:active {
+    transform: scale(0.97);
+}
+.ListName {
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    padding: 12.5px 25px;
+    border-radius: 5.625px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+.ListName:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+.ListName:active {
+    transform: scale(0.97);
+}
+.language {
+    justify-content: center;
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+.Button2 {
+    justify-content: center;
+    display: flex;
+    margin-top: 50px;
+    gap: 70px;
+}
+#language1, #language2 {
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    padding: 12.5px 25px;
+    border-radius: 5.625px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#language1:hover, #language2:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#language1:active, #language2:active {
+    transform: scale(0.97);
+}
+#Return2 {
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 15px 30px;
+    border-radius: 6.75px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#Return2:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#Return2:active {
+    transform: scale(0.97);
+}
+#Next2Button {
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 15px 30px;
+    border-radius: 6.75px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#Next2Button:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#Next2Button:active {
+    transform: scale(0.97);
+}
+#AddWord {
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    padding: 12.5px 25px;
+    border-radius: 5.625px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+    margin-top: 40px;
+}
+#AddWord:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#AddWord:active {
+    transform: scale(0.97);
+}
+.Button3 {
+    justify-content: center;
+    display: flex;
+    gap: 70px;
+    margin-top: 10px;
+}
+#Return3 {
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 15px 30px;
+    border-radius: 6.75px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#Return3:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#Return3:active {
+    transform: scale(0.97);
+}
+#Next3Button {
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 15px 30px;
+    border-radius: 6.75px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#Next3Button:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#Next3Button:active {
+    transform: scale(0.97);
+}  
+.enter {
+    justify-content: center;
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+#word1, #word2 {
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    padding: 12.5px 25px;
+    border-radius: 5.625px;
+    background: #BAC1FF;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.4s;
+}
+#word1:hover, #word2:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+#word1:active, #word2:active {
+    transform: scale(0.97);
+}
+
+
+
+
+
+
 
 
 
