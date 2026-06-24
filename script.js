@@ -487,6 +487,14 @@ Finish.addEventListener("click", function() {
 const ListMenu = document.getElementById("ListMenu");
 if (ListMenu) {
 
+const HomeButton = document.getElementById("BackToMain");
+
+HomeButton.onclick = function() {
+
+   window.open('../index.html', '_self');
+
+}
+
 function loadMyLists() {
 
     const container = document.getElementById("ListContainer");
@@ -1150,6 +1158,25 @@ function loadMyListsChecker() {
     }
 
 loadMyListsChecker();
+
+const VocabularyCheckHome = document.getElementById("VocabularyCheckerHome");
+const VocabularyCheckMenu = document.getElementById("VocabularyCheckMenu");
+const Results = document.getElementById("Results");
+
+VocabularyCheckHome.onclick = function() {
+
+    if (VocabularyCheckMenu.classList.contains('hidden') && Results.classList.contains('hidden')) {
+
+        const answer = confirm("Are you sure you want to go back to the main menu? Changes won't be saved!");
+        if (!answer) {
+            return;
+        }
+
+    }
+
+    window.open('../index.html', '_self');
+
+}
 
 }
 
