@@ -32,4 +32,4 @@ Many thanks to our wonderful team! This project would not be possible without th
     - Programme and Project leader, responsible for the team management and scripts.
 
 - @WildHannes
-    - ???
+    - The one and only bug tester.
