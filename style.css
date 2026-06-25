@@ -643,7 +643,102 @@ td {
 }
 .ImportMy:active {
     transform: scale(0.97);
-} 
+}
+.CloseEdit {
+    justify-content: center;
+    display: flex;
+    gap: 40px;
+    margin-top: 16%;
+
+}
+.CloseMy {
+    border: none;
+    font-size: 30px;
+    padding: 15px 30px;
+    border-radius: 6.75px;
+    cursor: pointer;
+    background: #BAC1FF;
+    font-family: inherit;
+    transition: 0.4s;
+}
+.CloseMy:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+.CloseMy:active {
+    transform: scale(0.97);
+}
+.EditMy {
+    border: none;
+    font-family: inherit;
+    font-size: 30px;
+    padding: 15px 30px;
+    border-radius: 6.75px;
+    cursor: pointer;
+    background: #BAC1FF;
+    transition: 0.4s;
+}
+.EditMy:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+.EditMy:active {
+    transform: scale(0.97);
+}
+.SaveCancelList {
+    justify-content: center;
+    display: flex;
+    gap: 40px;
+    margin-top: 16%;
+}
+.SaveEdit {
+    border:none;
+    font-family: inherit;
+    font-size: 30px;
+    padding: 15px 30px;
+    border-radius: 6.75px;
+    cursor: pointer;
+    background: #BAC1FF;
+    transition: 0.4s;
+}
+.SaveEdit:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+.SaveEdit:active {
+    transform: scale(0.97);
+}
+.CancelEdit {
+    border:none;
+    font-family: inherit;
+    font-size: 30px;
+    padding: 15px 30px;
+    border-radius: 6.75px;
+    cursor: pointer;
+    background: #BAC1FF;
+    transition: 0.4s;
+}
+.CancelEdit:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+.CancelEdit:active {
+    transform: scale(0.97);
+}
+.EditText {
+    border: none;
+    font-family: inherit;
+    font-size: 25px;
+    padding: 12.5px 25px;
+    border-radius: 5.625px;
+    cursor: pointer;
+    background: #BAC1FF;
+    transition: 0.4s;
+    margin-top: 20px;
+}
+.EditText:hover {
+    box-shadow: 7px 5px 56px -14px #9197C6;
+}
+.EditText:active {
+    transform: scale(0.97);
+}
+
 
 
 

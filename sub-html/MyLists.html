@@ -47,14 +47,20 @@
         </div>
 
         <div id="MyListEditNameMenu" class="hidden">
+            <div class="EditText">
             <input type="text" id="MyEditListNameInput" placeholder="Edit List Name">
+            </div>
 
-            <button id="MySaveListNameEdit">Save List Name</button>
-            <button id="MyCancelListNameEdit">Cancel List Name Edit</button>
+            <div class="SaveCancelList">
+            <button class="SaveEdit" id="MySaveListNameEdit">Save List Name</button>
+            <button class="CancelEdit" id="MyCancelListNameEdit">Cancel List Name Edit</button>
+            </div>
         </div>
     
-        <button id="BackToMyLists">Close</button>
-        <button id="EditMyListName">Edit List Name</button>
+        <div class="CloseEdit">
+        <button class="CloseMy" id="BackToMyLists">Close</button>
+        <button class="EditMy" id="EditMyListName">Edit List Name</button>
+        </div>
     </div>
 
     <script src="../script.js"></script>
