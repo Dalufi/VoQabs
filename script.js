@@ -492,6 +492,8 @@ async function loadMyLists() {
     const container = document.getElementById("ListContainer");
     const ViewMenu = document.getElementById("ViewMenu");
     const MyListsAddMenu = document.getElementById("MyListsAddMenu");
+    const ExportButton = document.getElementById("ExportButton");
+    const ImportInput = document.getElementById("ImportInput");
     container.innerHTML = ""
 
     const allLists = JSON.parse(localStorage.getItem("allLists")) || [];
@@ -504,8 +506,61 @@ async function loadMyLists() {
             window.open('../sub-html/CreateList.html', '_self');
         }
         container.appendChild(createListButton);
-        return;
     }
+
+    ExportButton.onclick = function() {
+
+        const json = JSON.stringify(allLists, null, 4);
+                
+        const blob = new Blob([json], {
+            type: "application/json"
+        })
+
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "YourLists_VoQbas.json";
+
+        a.click();
+
+        URL.revokeObjectURL(url);
+
+    }
+
+    ImportInput.addEventListener("change", function() {
+
+        const file = ImportInput.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function() {
+
+            const importedLists = JSON.parse(reader.result);
+
+            let listToAdd = [];
+
+            if (Array.isArray(importedLists)) {
+                listToAdd = importedLists;
+            }
+            else {
+                listToAdd = [importedLists];
+            }
+
+            const combinedList = allLists.concat(listToAdd);
+            localStorage.setItem("allLists", JSON.stringify(combinedList));
+
+            alert("Succesfully imported " + file.name + "! The page will reload itself now.");
+        }
+
+        reader.readAsText(file);
+        location.reload();
+
+    })
 
         for (let i = 0; i < allLists.length; i++) {
             const list = allLists[i];
@@ -550,6 +605,8 @@ async function loadMyLists() {
             viewButton.textContent = "View";
             const deleteButton = document.createElement("button");
             deleteButton.textContent = "Delete";
+            const SingleExportButton = document.createElement("button");
+            SingleExportButton.textContent = "Export List";
 
             div.innerHTML = `
             <h3>${list.name}</h3>
@@ -560,6 +617,27 @@ async function loadMyLists() {
             container.appendChild(div);
             div.appendChild(viewButton);
             div.appendChild(deleteButton);
+            div.appendChild(SingleExportButton);
+
+            SingleExportButton.onclick = function() {
+
+                const json = JSON.stringify(list, null, 4);
+                
+                const blob = new Blob([json], {
+                    type: "application/json"
+                })
+
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = list.name + "_VoQbas.json";
+
+                a.click();
+
+                URL.revokeObjectURL(url);
+
+            }
 
             deleteButton.addEventListener("click", function() {
 
