@@ -491,6 +491,7 @@ async function loadMyLists() {
 
     const container = document.getElementById("ListContainer");
     const ViewMenu = document.getElementById("ViewMenu");
+    const MyListsAddMenu = document.getElementById("MyListsAddMenu");
     container.innerHTML = ""
 
     const allLists = JSON.parse(localStorage.getItem("allLists")) || [];
@@ -593,16 +594,26 @@ async function loadMyLists() {
                     const ListEditMenu = document.getElementById("MyListEditMenu");
                     const MyEditWord1 = document.getElementById("MyEditWord1");
                     const MyEditWord2 = document.getElementById("MyEditWord2");
+                    const MyAddWord1 = document.getElementById("MyAddWord1");
+                    const MyAddWord2 = document.getElementById("MyAddWord2");
+
+                    MyAddWord1.value = "";
+                    MyAddWord2.value = "";
                     MyEditWord1.value = "";
                     MyEditWord2.value = "";
                     NameInput.value = "";
                     ListEditMenu.classList.add('hidden');
                     EditNameMenu.classList.add('hidden');
+                    MyListsAddMenu.classList.add('hidden');
                     ViewMenu.classList.add('hidden');
                     ListMenu.classList.remove('hidden');
 
                     viewTitle.textContent = "";
                     viewTable.innerHTML = "";
+
+                    container.innerHTML = "";
+
+                    loadMyLists();
 
                 };
 
@@ -643,21 +654,36 @@ async function loadMyLists() {
                     }
                 }
                 
+                function ShowList() {
                 for (let j = 0; j < list.vocabulary.length; j++) {
 
                     const row = document.createElement("tr");
                     const cell1 = document.createElement("td");
                     const cell2 = document.createElement("td");
                     const editButton = document.createElement("button");
+                    const deleteButton = document.createElement("button");
 
                     cell1.textContent = list.vocabulary[j].word1;
                     cell2.textContent = list.vocabulary[j].word2;
                     editButton.textContent = "Edit";
+                    deleteButton.textContent = "Delete";
 
                     row.appendChild(cell1);
                     row.appendChild(cell2);
                     row.appendChild(editButton);
-                        viewTable.appendChild(row);
+                    row.appendChild(deleteButton);
+                    viewTable.appendChild(row);
+
+                    deleteButton.onclick = function() {
+
+                        list.vocabulary.splice(j, 1);
+                        localStorage.setItem("allLists", JSON.stringify(allLists));
+
+                        viewTable.innerHTML = "";
+                        ShowList();
+                        return;
+
+                    }
 
                     editButton.addEventListener("click", async function() {
 
@@ -741,12 +767,61 @@ async function loadMyLists() {
                             MyEditWord2.placeholder = "";
 
                         }
-
+                    }
                    
-                });
+                
+                );
+
+                }}
+
+                const AddNewWord = document.getElementById("AddNewWord");
+                AddNewWord.onclick = function() {
+
+                    const MyAddWord1 = document.getElementById("MyAddWord1");
+                    const MyAddWord2 = document.getElementById("MyAddWord2");
+                    const MySaveAdd = document.getElementById("MySaveAdd");
+                    const MyCancelAdd = document.getElementById("MyCancelAdd");
+
+                    MyAddWord1.placeholder = "Add Word in " + longName1;
+                    MyAddWord2.placeholder = "Add Word in " + longName2;
+
+                    MySaveAdd.onclick = function() {
+
+                        MyListsAddMenu.classList.add('hidden');
+
+                        const AddedWord1 = MyAddWord1.value.trim();
+                        const AddedWord2 = MyAddWord2.value.trim();
+
+                        if (AddedWord1 === "" || AddedWord2 === "") {
+                            alert("Please enter a word in both fields!");
+                            return;
+                        }
+
+                        list.vocabulary.push({ word1: AddedWord1, word2: AddedWord2});
+                        localStorage.setItem("allLists", JSON.stringify(allLists));
+
+                        viewTable.innerHTML = "";
+                        ShowList();
+
+                        MyAddWord1.value = "";
+                        MyAddWord2.value = "";
+
+                    }
+
+                    MyCancelAdd.onclick = function() {
+
+                        MyListsAddMenu.classList.add('hidden');
+
+                        MyAddWord1.value = "";
+                        MyAddWord2.value = "";
+
+                    }
+
+                    MyListsAddMenu.classList.remove('hidden');
 
                 }
 
+                ShowList();
             
                 ViewMenu.classList.remove('hidden');
                 ListMenu.classList.add('hidden');
