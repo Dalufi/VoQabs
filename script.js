@@ -278,8 +278,8 @@ Return3.addEventListener("click", function() {
 //event for the add word button
 AddWordButton.addEventListener("click", function() {
 
-    const word1 = word1Input.value;
-    const word2 = word2Input.value;
+    const word1 = word1Input.value.trim();
+    const word2 = word2Input.value.trim();
     const buttonCell = document.createElement("td");
 
     const editButton = document.createElement("button");
@@ -349,8 +349,8 @@ editButton.addEventListener("click", function() {
     //event for the save button in the edit menu
     document.getElementById("SaveEdit").onclick = function() {
 
-        const newWord1 = editWord1.value;
-        const newWord2 = editWord2.value;
+        const newWord1 = editWord1.value.trim();
+        const newWord2 = editWord2.value.trim();
 
         //prevents the user to save empty words
         if (newWord1 === "" || newWord2 === "") {
@@ -487,7 +487,7 @@ Finish.addEventListener("click", function() {
 const ListMenu = document.getElementById("ListMenu");
 if (ListMenu) {
 
-function loadMyLists() {
+async function loadMyLists() {
 
     const container = document.getElementById("ListContainer");
     const ViewMenu = document.getElementById("ViewMenu");
@@ -519,6 +519,31 @@ function loadMyLists() {
                 else {
                     pairForm = "pairs";
             }
+
+            let longName1;
+            let longName2;
+
+            const shortlanguage1 = list.language1;
+            const shortlanguage2 = list.language2;
+
+            let languageSelectionJSON = [];
+
+            async function loadLanguageNames() {
+                const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
+                languageSelectionJSON = await response.json();
+            }
+
+            await loadLanguageNames();
+
+            const foundLanguage1 = languageSelectionJSON.find(
+                lang => lang.code === shortlanguage1
+            );
+            const foundLanguage2 = languageSelectionJSON.find(
+                lang => lang.code === shortlanguage2
+            );
+
+            longName1 = foundLanguage1 ? foundLanguage1.name : shortlanguage1;
+            longName2 = foundLanguage2 ? foundLanguage2.name : shortlanguage2;
             
             const viewButton = document.createElement("button");
             viewButton.textContent = "View";
@@ -527,7 +552,7 @@ function loadMyLists() {
 
             div.innerHTML = `
             <h3>${list.name}</h3>
-            <p>${list.language1} and ${list.language2}</p>
+            <p>${longName1} & ${longName2}</p>
             <p>${list.vocabulary.length} word ${pairForm}</p>
             `;
 
@@ -633,7 +658,8 @@ function loadMyLists() {
                     row.appendChild(cell2);
                     row.appendChild(editButton);
                         viewTable.appendChild(row);
-                    editButton.addEventListener("click", function() {
+
+                    editButton.addEventListener("click", async function() {
 
                         const ListEditMenu = document.getElementById("MyListEditMenu");
                         const MyEditWord1 = document.getElementById("MyEditWord1");
@@ -641,6 +667,31 @@ function loadMyLists() {
                         const SaveMyEdit = document.getElementById("MySaveEdit");
                         const CancelMyEdit = document.getElementById("MyCancelEdit");
                         const currentVocabulary = list.vocabulary[j];
+
+                        let longEditName1;
+                        let longEditName2;
+
+                        const shortlanguageEdit1 = list.language1;
+                        const shortlanguageEdit2 = list.language2;
+
+                        let languageSelectionEditJSON = [];
+
+                        async function loadEditLanguageNames() {
+                            const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
+                            languageSelectionEditJSON = await response.json();
+                        }
+
+                        await loadEditLanguageNames();
+
+                        const foundLanguageEdit1 = languageSelectionEditJSON.find(
+                            lang => lang.code === shortlanguageEdit1
+                        );
+                        const foundLanguageEdit2 = languageSelectionEditJSON.find(
+                            lang => lang.code === shortlanguageEdit2
+                        );
+
+                        longEditName1 = foundLanguageEdit1 ? foundLanguageEdit1.name : shortlanguageEdit1;
+                        longEditName2 = foundLanguageEdit2 ? foundLanguageEdit2.name : shortlanguageEdit2;
                       
                         MyEditWord1.placeholder = "Edit word in " + longEditName1;
                         MyEditWord2.placeholder = "Edit word in " + longEditName2;
@@ -666,8 +717,8 @@ function loadMyLists() {
 
                         SaveMyEdit.onclick = function() {
 
-                            MyFinalWord1 = MyEditWord1.value;
-                            MyFinalWord2 = MyEditWord2.value;
+                            MyFinalWord1 = MyEditWord1.value.trim();
+                            MyFinalWord2 = MyEditWord2.value.trim();
 
                             if (MyFinalWord1 === "" || MyFinalWord2 === "") {
                                 alert("Please enter a word in both fields!");
@@ -678,8 +729,6 @@ function loadMyLists() {
                             currentVocabulary.word2 = MyFinalWord2;
 
                             localStorage.setItem("allLists", JSON.stringify(allLists));
-
-                            console.log(allLists);
 
                             cell1.textContent = MyFinalWord1;
                             cell2.textContent = MyFinalWord2;
@@ -723,7 +772,7 @@ loadMyLists();
 const CheckerMenu = document.getElementById("VocabularyCheckMenu");
 if (CheckerMenu) {
 
-function loadMyListsChecker() {
+async function loadMyListsChecker() {
 
     const container = document.getElementById("VocabularyChecklistContainer");
     container.innerHTML = ""
@@ -773,9 +822,38 @@ function loadMyListsChecker() {
             const useButton = document.createElement("button");
             useButton.textContent = "Use list";
 
+            const shortlanguage1 = list.language1;
+            const shortlanguage2 = list.language2;
+
+            let FinalSelectedOutput = "";
+
+            let longlanguage1 = "";
+            let longlanguage2 = "";
+
+            let WrongWords = [];
+
+            let languageSelectionJSON = [];
+
+            async function loadLanguageNames() {
+                const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
+                languageSelectionJSON = await response.json();
+            }
+
+            await loadLanguageNames();
+
+            const foundLanguage1 = languageSelectionJSON.find(
+                lang => lang.code === shortlanguage1
+            );
+            const foundLanguage2 = languageSelectionJSON.find(
+                lang => lang.code === shortlanguage2
+            );
+
+            longlanguage1 = foundLanguage1 ? foundLanguage1.name : shortlanguage1;
+            longlanguage2 = foundLanguage2 ? foundLanguage2.name : shortlanguage2;
+
             div.innerHTML = `
             <h3>${list.name}</h3>
-            <p>${list.language1} and ${list.language2}</p>
+            <p>${longlanguage1} and ${longlanguage2}</p>
             <p>${list.vocabulary.length} word ${pairForm}</p>
             `;
 
@@ -799,40 +877,9 @@ function loadMyListsChecker() {
               const StartRefreshRound = document.getElementById("StartRefreshRound");
               const CancelRefreshRound = document.getElementById("CancelRefreshRound");
 
-              const shortlanguage1 = list.language1;
-              const shortlanguage2 = list.language2;
-
-              let FinalSelectedOutput = "";
-
-              let longlanguage1 = "";
-              let longlanguage2 = "";
-
-              let WrongWords = [];
-
-              let languageSelectionJSON = [];
-
-              async function loadLanguageNames() {
-                  const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
-                  languageSelectionJSON = await response.json();
-              }
-
-              await loadLanguageNames();
-
-              const foundLanguage1 = languageSelectionJSON.find(
-                  lang => lang.code === shortlanguage1
-              );
-              const foundLanguage2 = languageSelectionJSON.find(
-                  lang => lang.code === shortlanguage2
-              );
-
-              longlanguage1 = foundLanguage1 ? foundLanguage1.name : shortlanguage1;
-              longlanguage2 = foundLanguage2 ? foundLanguage2.name : shortlanguage2;
-
               OutputLanguage1.textContent = longlanguage1 + " → " + longlanguage2;
               OutputLanguage2.textContent = longlanguage2 + " → " + longlanguage1;
               
-              console.log(longlanguage1, longlanguage2);
-
               VocabularyCheckMenu.classList.add('hidden');
               VocabularyCheckDiv.classList.remove('hidden');
               VocabularyCheckSelectionDiv.classList.remove('hidden');
