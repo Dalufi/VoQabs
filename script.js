@@ -278,8 +278,8 @@ Return3.addEventListener("click", function() {
 //event for the add word button
 AddWordButton.addEventListener("click", function() {
 
-    const word1 = word1Input.value;
-    const word2 = word2Input.value;
+    const word1 = word1Input.value.trim();
+    const word2 = word2Input.value.trim();
     const buttonCell = document.createElement("td");
 
     const editButton = document.createElement("button");
@@ -349,8 +349,8 @@ editButton.addEventListener("click", function() {
     //event for the save button in the edit menu
     document.getElementById("SaveEdit").onclick = function() {
 
-        const newWord1 = editWord1.value;
-        const newWord2 = editWord2.value;
+        const newWord1 = editWord1.value.trim();
+        const newWord2 = editWord2.value.trim();
 
         //prevents the user to save empty words
         if (newWord1 === "" || newWord2 === "") {
@@ -487,10 +487,13 @@ Finish.addEventListener("click", function() {
 const ListMenu = document.getElementById("ListMenu");
 if (ListMenu) {
 
-function loadMyLists() {
+async function loadMyLists() {
 
     const container = document.getElementById("ListContainer");
     const ViewMenu = document.getElementById("ViewMenu");
+    const MyListsAddMenu = document.getElementById("MyListsAddMenu");
+    const ExportButton = document.getElementById("ExportButton");
+    const ImportInput = document.getElementById("ImportInput");
     container.innerHTML = ""
 
     const allLists = JSON.parse(localStorage.getItem("allLists")) || [];
@@ -503,8 +506,61 @@ function loadMyLists() {
             window.open('../sub-html/CreateList.html', '_self');
         }
         container.appendChild(createListButton);
-        return;
     }
+
+    ExportButton.onclick = function() {
+
+        const json = JSON.stringify(allLists, null, 4);
+                
+        const blob = new Blob([json], {
+            type: "application/json"
+        })
+
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "YourLists_VoQbas.json";
+
+        a.click();
+
+        URL.revokeObjectURL(url);
+
+    }
+
+    ImportInput.addEventListener("change", function() {
+
+        const file = ImportInput.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function() {
+
+            const importedLists = JSON.parse(reader.result);
+
+            let listToAdd = [];
+
+            if (Array.isArray(importedLists)) {
+                listToAdd = importedLists;
+            }
+            else {
+                listToAdd = [importedLists];
+            }
+
+            const combinedList = allLists.concat(listToAdd);
+            localStorage.setItem("allLists", JSON.stringify(combinedList));
+
+            alert("Succesfully imported " + file.name + "! The page will reload itself now.");
+        }
+
+        reader.readAsText(file);
+        location.reload();
+
+    })
 
         for (let i = 0; i < allLists.length; i++) {
             const list = allLists[i];
@@ -519,21 +575,69 @@ function loadMyLists() {
                 else {
                     pairForm = "pairs";
             }
+
+            let longName1;
+            let longName2;
+
+            const shortlanguage1 = list.language1;
+            const shortlanguage2 = list.language2;
+
+            let languageSelectionJSON = [];
+
+            async function loadLanguageNames() {
+                const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
+                languageSelectionJSON = await response.json();
+            }
+
+            await loadLanguageNames();
+
+            const foundLanguage1 = languageSelectionJSON.find(
+                lang => lang.code === shortlanguage1
+            );
+            const foundLanguage2 = languageSelectionJSON.find(
+                lang => lang.code === shortlanguage2
+            );
+
+            longName1 = foundLanguage1 ? foundLanguage1.name : shortlanguage1;
+            longName2 = foundLanguage2 ? foundLanguage2.name : shortlanguage2;
             
             const viewButton = document.createElement("button");
             viewButton.textContent = "View";
             const deleteButton = document.createElement("button");
             deleteButton.textContent = "Delete";
+            const SingleExportButton = document.createElement("button");
+            SingleExportButton.textContent = "Export List";
 
             div.innerHTML = `
             <h3>${list.name}</h3>
-            <p>${list.language1} and ${list.language2}</p>
+            <p>${longName1} & ${longName2}</p>
             <p>${list.vocabulary.length} word ${pairForm}</p>
             `;
 
             container.appendChild(div);
             div.appendChild(viewButton);
             div.appendChild(deleteButton);
+            div.appendChild(SingleExportButton);
+
+            SingleExportButton.onclick = function() {
+
+                const json = JSON.stringify(list, null, 4);
+                
+                const blob = new Blob([json], {
+                    type: "application/json"
+                })
+
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = list.name + "_VoQbas.json";
+
+                a.click();
+
+                URL.revokeObjectURL(url);
+
+            }
 
             deleteButton.addEventListener("click", function() {
 
@@ -568,16 +672,26 @@ function loadMyLists() {
                     const ListEditMenu = document.getElementById("MyListEditMenu");
                     const MyEditWord1 = document.getElementById("MyEditWord1");
                     const MyEditWord2 = document.getElementById("MyEditWord2");
+                    const MyAddWord1 = document.getElementById("MyAddWord1");
+                    const MyAddWord2 = document.getElementById("MyAddWord2");
+
+                    MyAddWord1.value = "";
+                    MyAddWord2.value = "";
                     MyEditWord1.value = "";
                     MyEditWord2.value = "";
                     NameInput.value = "";
                     ListEditMenu.classList.add('hidden');
                     EditNameMenu.classList.add('hidden');
+                    MyListsAddMenu.classList.add('hidden');
                     ViewMenu.classList.add('hidden');
                     ListMenu.classList.remove('hidden');
 
                     viewTitle.textContent = "";
                     viewTable.innerHTML = "";
+
+                    container.innerHTML = "";
+
+                    loadMyLists();
 
                 };
 
@@ -618,22 +732,38 @@ function loadMyLists() {
                     }
                 }
                 
+                function ShowList() {
                 for (let j = 0; j < list.vocabulary.length; j++) {
 
                     const row = document.createElement("tr");
                     const cell1 = document.createElement("td");
                     const cell2 = document.createElement("td");
                     const editButton = document.createElement("button");
+                    const deleteButton = document.createElement("button");
 
                     cell1.textContent = list.vocabulary[j].word1;
                     cell2.textContent = list.vocabulary[j].word2;
                     editButton.textContent = "Edit";
+                    deleteButton.textContent = "Delete";
 
                     row.appendChild(cell1);
                     row.appendChild(cell2);
                     row.appendChild(editButton);
-                        viewTable.appendChild(row);
-                    editButton.addEventListener("click", function() {
+                    row.appendChild(deleteButton);
+                    viewTable.appendChild(row);
+
+                    deleteButton.onclick = function() {
+
+                        list.vocabulary.splice(j, 1);
+                        localStorage.setItem("allLists", JSON.stringify(allLists));
+
+                        viewTable.innerHTML = "";
+                        ShowList();
+                        return;
+
+                    }
+
+                    editButton.addEventListener("click", async function() {
 
                         const ListEditMenu = document.getElementById("MyListEditMenu");
                         const MyEditWord1 = document.getElementById("MyEditWord1");
@@ -641,6 +771,31 @@ function loadMyLists() {
                         const SaveMyEdit = document.getElementById("MySaveEdit");
                         const CancelMyEdit = document.getElementById("MyCancelEdit");
                         const currentVocabulary = list.vocabulary[j];
+
+                        let longEditName1;
+                        let longEditName2;
+
+                        const shortlanguageEdit1 = list.language1;
+                        const shortlanguageEdit2 = list.language2;
+
+                        let languageSelectionEditJSON = [];
+
+                        async function loadEditLanguageNames() {
+                            const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
+                            languageSelectionEditJSON = await response.json();
+                        }
+
+                        await loadEditLanguageNames();
+
+                        const foundLanguageEdit1 = languageSelectionEditJSON.find(
+                            lang => lang.code === shortlanguageEdit1
+                        );
+                        const foundLanguageEdit2 = languageSelectionEditJSON.find(
+                            lang => lang.code === shortlanguageEdit2
+                        );
+
+                        longEditName1 = foundLanguageEdit1 ? foundLanguageEdit1.name : shortlanguageEdit1;
+                        longEditName2 = foundLanguageEdit2 ? foundLanguageEdit2.name : shortlanguageEdit2;
                       
                         MyEditWord1.placeholder = "Edit word in " + longEditName1;
                         MyEditWord2.placeholder = "Edit word in " + longEditName2;
@@ -666,8 +821,8 @@ function loadMyLists() {
 
                         SaveMyEdit.onclick = function() {
 
-                            MyFinalWord1 = MyEditWord1.value;
-                            MyFinalWord2 = MyEditWord2.value;
+                            MyFinalWord1 = MyEditWord1.value.trim();
+                            MyFinalWord2 = MyEditWord2.value.trim();
 
                             if (MyFinalWord1 === "" || MyFinalWord2 === "") {
                                 alert("Please enter a word in both fields!");
@@ -678,8 +833,6 @@ function loadMyLists() {
                             currentVocabulary.word2 = MyFinalWord2;
 
                             localStorage.setItem("allLists", JSON.stringify(allLists));
-
-                            console.log(allLists);
 
                             cell1.textContent = MyFinalWord1;
                             cell2.textContent = MyFinalWord2;
@@ -692,12 +845,61 @@ function loadMyLists() {
                             MyEditWord2.placeholder = "";
 
                         }
-
+                    }
                    
-                });
+                
+                );
+
+                }}
+
+                const AddNewWord = document.getElementById("AddNewWord");
+                AddNewWord.onclick = function() {
+
+                    const MyAddWord1 = document.getElementById("MyAddWord1");
+                    const MyAddWord2 = document.getElementById("MyAddWord2");
+                    const MySaveAdd = document.getElementById("MySaveAdd");
+                    const MyCancelAdd = document.getElementById("MyCancelAdd");
+
+                    MyAddWord1.placeholder = "Add Word in " + longName1;
+                    MyAddWord2.placeholder = "Add Word in " + longName2;
+
+                    MySaveAdd.onclick = function() {
+
+                        MyListsAddMenu.classList.add('hidden');
+
+                        const AddedWord1 = MyAddWord1.value.trim();
+                        const AddedWord2 = MyAddWord2.value.trim();
+
+                        if (AddedWord1 === "" || AddedWord2 === "") {
+                            alert("Please enter a word in both fields!");
+                            return;
+                        }
+
+                        list.vocabulary.push({ word1: AddedWord1, word2: AddedWord2});
+                        localStorage.setItem("allLists", JSON.stringify(allLists));
+
+                        viewTable.innerHTML = "";
+                        ShowList();
+
+                        MyAddWord1.value = "";
+                        MyAddWord2.value = "";
+
+                    }
+
+                    MyCancelAdd.onclick = function() {
+
+                        MyListsAddMenu.classList.add('hidden');
+
+                        MyAddWord1.value = "";
+                        MyAddWord2.value = "";
+
+                    }
+
+                    MyListsAddMenu.classList.remove('hidden');
 
                 }
 
+                ShowList();
             
                 ViewMenu.classList.remove('hidden');
                 ListMenu.classList.add('hidden');
@@ -723,7 +925,7 @@ loadMyLists();
 const CheckerMenu = document.getElementById("VocabularyCheckMenu");
 if (CheckerMenu) {
 
-function loadMyListsChecker() {
+async function loadMyListsChecker() {
 
     const container = document.getElementById("VocabularyChecklistContainer");
     container.innerHTML = ""
@@ -773,9 +975,38 @@ function loadMyListsChecker() {
             const useButton = document.createElement("button");
             useButton.textContent = "Use list";
 
+            const shortlanguage1 = list.language1;
+            const shortlanguage2 = list.language2;
+
+            let FinalSelectedOutput = "";
+
+            let longlanguage1 = "";
+            let longlanguage2 = "";
+
+            let WrongWords = [];
+
+            let languageSelectionJSON = [];
+
+            async function loadLanguageNames() {
+                const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
+                languageSelectionJSON = await response.json();
+            }
+
+            await loadLanguageNames();
+
+            const foundLanguage1 = languageSelectionJSON.find(
+                lang => lang.code === shortlanguage1
+            );
+            const foundLanguage2 = languageSelectionJSON.find(
+                lang => lang.code === shortlanguage2
+            );
+
+            longlanguage1 = foundLanguage1 ? foundLanguage1.name : shortlanguage1;
+            longlanguage2 = foundLanguage2 ? foundLanguage2.name : shortlanguage2;
+
             div.innerHTML = `
             <h3>${list.name}</h3>
-            <p>${list.language1} and ${list.language2}</p>
+            <p>${longlanguage1} and ${longlanguage2}</p>
             <p>${list.vocabulary.length} word ${pairForm}</p>
             `;
 
@@ -799,40 +1030,9 @@ function loadMyListsChecker() {
               const StartRefreshRound = document.getElementById("StartRefreshRound");
               const CancelRefreshRound = document.getElementById("CancelRefreshRound");
 
-              const shortlanguage1 = list.language1;
-              const shortlanguage2 = list.language2;
-
-              let FinalSelectedOutput = "";
-
-              let longlanguage1 = "";
-              let longlanguage2 = "";
-
-              let WrongWords = [];
-
-              let languageSelectionJSON = [];
-
-              async function loadLanguageNames() {
-                  const response = await fetch(getAssetUrl('assets/LanguageSelection.json'));
-                  languageSelectionJSON = await response.json();
-              }
-
-              await loadLanguageNames();
-
-              const foundLanguage1 = languageSelectionJSON.find(
-                  lang => lang.code === shortlanguage1
-              );
-              const foundLanguage2 = languageSelectionJSON.find(
-                  lang => lang.code === shortlanguage2
-              );
-
-              longlanguage1 = foundLanguage1 ? foundLanguage1.name : shortlanguage1;
-              longlanguage2 = foundLanguage2 ? foundLanguage2.name : shortlanguage2;
-
               OutputLanguage1.textContent = longlanguage1 + " → " + longlanguage2;
               OutputLanguage2.textContent = longlanguage2 + " → " + longlanguage1;
               
-              console.log(longlanguage1, longlanguage2);
-
               VocabularyCheckMenu.classList.add('hidden');
               VocabularyCheckDiv.classList.remove('hidden');
               VocabularyCheckSelectionDiv.classList.remove('hidden');
