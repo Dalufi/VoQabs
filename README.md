@@ -21,12 +21,16 @@ Tired of failing vocabulary checks in school or do you just want to challenge yo
 
 ## How it works!
 ### Current features:
+
 - Create a List
     - Accessible by pressing the "Create List" button on the main menu. In the "Create List" menu you can make your own list by pressing the start button. You'll firstly need to enter a name for it. Then select the first and second language (you can choose from 20 different languages). The order doesn't matter. After that you'll have to add your words by entering them in the text boxes and pressing "Add word to list". You'll see your words appear in a table. After you've added all of your words press "Next" and then "Finish" to create your list. It will be saved on your browser so you won't need to worry about losing the list.
+
 - View, edit and more
     - You can check out your lists by pressing the "My Lists" button on the main menu. There you should be able to see all of your lists. Each list "container" has two buttons (for editing/deleting). One to delete the list and one to view it. Viewing will allow you to see all of your Words in the list. You can delete and delete them if you wish to but you can also edit the list name itself. 
-- ???
-    - releasing very soon
+
+- Export/Import
+    - Got to "My Lists" by pressing the "My Lists" button in the main menu. There you'll find 3 options about Import and Export of Lists. The "Export all Lists" button will allow you to export all your lists (if available) with one button. If you have lists you'll also have the option to export each list individually. There should be an "Export List" button between "View" and "Delete". If you want to import an list you can do it by pressing the "Select File" at the bottom. The import/export feature only supports .json files.
+
 - Starting vocabulary check/quiz
     - Press the "Start Vocabulary Check" button on the main menu. After that you should be able to see all your lists with a "use" button below them. Pressing the button will ask you which in what "direction" you want to test yourself (e.g. English -> German or German -> English). After that you'll be asked a series of question about the words you entered into your list (e.g. Translate house to...). After completing the quiz/check you'll be shown your score and the words you didn't know if there were any. If you didn't achieve 100%, you can complete a "refresh round." This will test you with all the words you didn't know last time.
 
