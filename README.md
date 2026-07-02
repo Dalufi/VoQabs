@@ -11,13 +11,18 @@ Tired of failing vocabulary checks in school or do you just want to challenge yo
 > [!WARNING]
 > `VoQabs` is still in its early phase of development so you might find some bugs. We do really appreaciate any type of feedback.
 
-## Changes! (v0.1.1-beta):
-### Fixes:
-- Fixed the issue related to github pages
-> [!NOTE]
-> We are still not sure if we fixed everything so please look out for errors.
+## Changes! (v0.2.0-beta):
+### Additions:
+- Export/Import features
+- feature to add more words to an already existing list
+- small quality of life changes to "My Lists" menu
 
-[More info here!](https://github.com/Dalufi/VoQabs/releases/tag/v0.1.1-beta)
+### Fixes:
+- Spaces before and after a word won't be saved in the user's lists anymore
+> [!NOTE]
+> Importing multiple lists at once can sometimes cause some issues. We're trying to optimise that.
+
+[More info here!](https://github.com/Dalufi/VoQabs/releases#release-v0.2.0-beta)
 
 ## How it works!
 ### Current features:
