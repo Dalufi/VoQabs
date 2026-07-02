@@ -12,7 +12,7 @@
    <!--Main Menu-->
     <div id="ListMenu">
      
-        <h1>My Lists</h1>
+        <h1 class="headline">My Lists</h1>
 
          <div id="ListContainer">
 
@@ -20,8 +20,8 @@
 
         </div>
 
-        <button id="ExportButton">Export all Lists (coming out soon)</button>
-        <input type="file" id="ImportInput" accept=".json" placeholder="Import Lists (coming out soon)">
+        <button class="ExportAll" id="ExportButton">Export all Lists (coming out soon)</button>
+        <input class="ImportMy" type="file" id="ImportInput" accept=".json" placeholder="Import Lists (coming out soon)">
 
     </div>
 
@@ -45,14 +45,20 @@
         </div>
 
         <div id="MyListEditNameMenu" class="hidden">
+            <div class="EditText">
             <input type="text" id="MyEditListNameInput" placeholder="Edit List Name">
+            </div>
 
-            <button id="MySaveListNameEdit">Save List Name</button>
-            <button id="MyCancelListNameEdit">Cancel List Name Edit</button>
+            <div class="SaveCancelList">
+            <button class="SaveEdit" id="MySaveListNameEdit">Save List Name</button>
+            <button class="CancelEdit" id="MyCancelListNameEdit">Cancel List Name Edit</button>
+            </div>
         </div>
     
-        <button id="BackToMyLists">Close</button>
-        <button id="EditMyListName">Edit List Name</button>
+        <div class="CloseEdit">
+        <button class="CloseMy" id="BackToMyLists">Close</button>
+        <button class="EditMy" id="EditMyListName">Edit List Name</button>
+        </div>
     </div>
 
     <img id="BackToMain" src="../assets/VoQabs_Logo.png" class="clickable">
