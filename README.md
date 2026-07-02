@@ -37,11 +37,13 @@ Tired of failing vocabulary checks in school or do you just want to challenge yo
 ## Huge thanks!
 Many thanks to our wonderful team! This project would not be possible without their cooperation and creativity.
 
+### Active members of the team:
 - @ChaseMoin
     - Our Webdesigner, responsible for the entire appearance of this tool.
 
 - @Dalufi
     - Programme and Project leader, responsible for the team management and scripts.
 
-- @WildHannes
+### former team members:
+- @WildHannes (resigned)
     - The one and only bug tester.
